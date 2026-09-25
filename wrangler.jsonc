@@ -1,0 +1,11 @@
+// Configuración de Cloudflare Workers (static assets).
+// El sitio es 100% estático: se publica el contenido de ./public tal cual, sin build.
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "simuladores",
+  "compatibility_date": "2026-09-25",
+  "assets": {
+    "directory": "./public/",
+    "not_found_handling": "404-page"
+  }
+}

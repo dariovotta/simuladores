@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simuladores Financieros | MisFinanzas</title>
+    <meta name="description" content="Herramientas gratuitas para tomar mejores decisiones de inversión: comisiones de brokers, rotación de ONs, duration de bonos, LECAPs y carry trade.">
+    <link rel="icon" href="assets/img/brand/logo.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/tokens.css">
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/pages/home.css">
+    <script type="module" src="assets/js/pages/home.js"></script>
+</head>
+<body data-page="home">
+
+<section class="hero">
+    <img class="hero__logo" src="assets/img/brand/logo.svg" alt="MisFinanzas" width="72" height="72">
+    <h1 class="hero__title">Simuladores <span>Financieros</span></h1>
+    <p class="hero__lead">Herramientas gratuitas para tomar mejores decisiones de inversión</p>
+</section>
+
+<main class="main main--narrow">
+    <h2 class="section-label">Herramientas disponibles</h2>
+    <!-- Las tarjetas se generan desde assets/js/config/site.js -->
+    <div class="sim-grid" id="simGrid"></div>
+</main>
+
+<div data-slot="footer"></div>
+
+</body>
+</html>

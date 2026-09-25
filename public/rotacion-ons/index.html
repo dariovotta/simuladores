@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Rotación de ONs | MisFinanzas</title>
+    <meta name="description" content="Calculá si conviene vender una Obligación Negociable para comprar otra con mejor TIR y cuántos meses tardás en recuperar las comisiones.">
+    <link rel="icon" href="../assets/img/brand/logo.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/tokens.css">
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" defer></script>
+    <script type="module" src="../assets/js/pages/rotacion-ons.js"></script>
+</head>
+<body data-page="rotacion-ons">
+
+<div data-slot="header"></div>
+
+<section class="hero">
+    <h1 class="hero__title">¿Conviene hacer la <span>rotación</span> de ON?</h1>
+    <p class="hero__lead">Calculá cuánto te cuestan las comisiones al cambiar de Obligación Negociable y cuánto tiempo necesitás para recuperar ese costo con el diferencial de TIR.</p>
+</section>
+
+<main class="main">
+
+    <div class="callout animate-in">
+        <h2 class="callout__title">💡 ¿Cómo funciona?</h2>
+        <p>Cuando vendés una ON para comprar otra con mejor TIR, pagás comisiones de venta y de compra (ida y vuelta). Ese costo "se come" parte de tu ganancia. Este simulador te muestra cuántos meses necesitás quedarte con la nueva ON para que el diferencial de TIR compense las comisiones de la rotación en cada broker.</p>
+    </div>
+
+    <section class="card animate-in">
+        <div class="card__header">
+            <div>
+                <h2 class="card__title">📊 Simulador de Rotación</h2>
+                <p class="card__subtitle">Ingresá los datos de tu operación</p>
+            </div>
+        </div>
+
+        <div class="form-grid">
+            <div class="field">
+                <label class="field__label" for="amount">Monto invertido (ARS o USD)</label>
+                <input class="input" type="text" id="amount" placeholder="Ej: 10.000.000">
+            </div>
+            <div class="field">
+                <label class="field__label" for="currentYield">TIR de la ON actual</label>
+                <div class="input-affix input-affix--suffix">
+                    <input class="input" type="text" id="currentYield" placeholder="Ej: 6,5">
+                    <span class="input-affix__text">%</span>
+                </div>
+            </div>
+            <div class="field">
+                <label class="field__label" for="newYield">TIR de la ON nueva</label>
+                <div class="input-affix input-affix--suffix">
+                    <input class="input" type="text" id="newYield" placeholder="Ej: 7,0">
+                    <span class="input-affix__text">%</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="compare-strip hidden" id="spreadStrip">
+            <div>
+                <div class="compare-strip__label">TIR actual</div>
+                <div class="compare-strip__value" id="spreadCurrent">—</div>
+            </div>
+            <div class="compare-strip__op" aria-hidden="true">→</div>
+            <div>
+                <div class="compare-strip__label">TIR nueva</div>
+                <div class="compare-strip__value" id="spreadNew">—</div>
+            </div>
+            <div class="compare-strip__op" aria-hidden="true">=</div>
+            <div>
+                <div class="compare-strip__label">Diferencial</div>
+                <div class="compare-strip__value" id="spreadDelta">—</div>
+            </div>
+        </div>
+
+        <div id="results"></div>
+    </section>
+
+    <section class="card animate-in hidden" id="chartCard">
+        <div class="card__header">
+            <div>
+                <h2 class="card__title">⏱️ Meses para recuperar el costo de la rotación</h2>
+                <p class="card__subtitle">Tiempo necesario para que el diferencial de TIR compense las comisiones</p>
+            </div>
+        </div>
+        <div class="chart-box">
+            <canvas id="recoveryChart" role="img" aria-label="Meses de recupero por broker"></canvas>
+        </div>
+    </section>
+
+    <h2 class="section-label section-label--spaced">Brokers con planes diferenciales</h2>
+    <div id="brokerPlans"></div>
+
+    <div class="disclaimer">
+        <h4 class="disclaimer__title">⚠️ Aviso legal</h4>
+        <p>Este simulador es de carácter informativo y no constituye asesoramiento financiero. El cálculo asume que el diferencial de TIR se mantiene constante y no contempla variaciones de precio de mercado, riesgo crediticio, ni otros factores. Las comisiones corresponden a las tarifas publicadas por cada broker para ONs (personas humanas, operatoria online) vigentes a <span data-bind="updated">marzo 2026</span>. Se incluyen derechos de mercado BYMA (0,01%). Las ONs están exentas de IVA sobre comisiones. Verificá siempre las comisiones actualizadas.</p>
+    </div>
+
+</main>
+
+<div data-slot="footer"></div>
+
+</body>
+</html>

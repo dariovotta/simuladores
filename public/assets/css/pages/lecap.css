@@ -1,0 +1,23 @@
+/* =========================================================
+   LECAP
+   ========================================================= */
+:root {
+    --lecap-market: #1E3D6B;
+    --lecap-technical: #1A5C35;
+    --lecap-peak: #8B2020;
+}
+
+.lecap-controls {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 32px;
+}
+.lecap-controls .field__label { margin-bottom: 0; }
+
+.lecap-swatch--market { background: var(--lecap-market); }
+.lecap-swatch--technical { background: var(--lecap-technical); }
+.lecap-swatch--peak { background: var(--lecap-peak); }
+
+@media (max-width: 640px) {
+    .lecap-controls { grid-template-columns: 1fr; }
+}

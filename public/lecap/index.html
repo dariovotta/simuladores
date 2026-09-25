@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Cuándo vender una LECAP? | MisFinanzas</title>
+    <meta name="description" content="Simulá si te conviene vender una LECAP antes del vencimiento o esperar, según cómo cambie la tasa de mercado.">
+    <link rel="icon" href="../assets/img/brand/logo.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/tokens.css">
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="../assets/css/pages/lecap.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
+    <script type="module" src="../assets/js/pages/lecap.js"></script>
+</head>
+<body data-page="lecap" data-accent="green">
+
+<div data-slot="header"></div>
+
+<section class="hero">
+    <h1 class="hero__title">LECAP: ¿cuándo <span>conviene vender</span> antes?</h1>
+    <p class="hero__lead">Simulá cómo el precio de mercado se separa del valor técnico cuando cambian las tasas, y encontrá el momento óptimo de salida.</p>
+</section>
+
+<main class="main">
+
+    <div class="callout callout--accent animate-in">
+        <p>Cuando comprás una LECAP, el Estado te promete un valor fijo al vencimiento. Pero como cotiza en bolsa, <strong>el precio cambia todos los días</strong>. Si las tasas de mercado bajan, el precio sube por encima de lo esperado y puede convenir vender antes de tiempo. Si suben, el precio baja y esperar es mejor.</p>
+    </div>
+
+    <section class="card animate-in">
+        <div class="card__header">
+            <div>
+                <h2 class="card__title">🔧 Parámetros</h2>
+                <p class="card__subtitle">Definí el plazo en días exactos (7 a 180) y el día en que cambia la tasa de mercado.</p>
+            </div>
+        </div>
+        <form class="lecap-controls" id="lecapForm" onsubmit="return false">
+            <div class="range-field">
+                <div class="range-field__head">
+                    <label class="field__label" for="buyRate">Tasa de compra (TEM)</label>
+                    <output class="range-field__value" for="buyRate" id="buyRateOut"></output>
+                </div>
+                <input class="range" type="range" id="buyRate" min="0" max="5" step="0.1" value="3">
+            </div>
+            <div class="range-field">
+                <div class="range-field__head">
+                    <label class="field__label" for="marketRate">Nueva tasa de mercado (TEM)</label>
+                    <output class="range-field__value" for="marketRate" id="marketRateOut"></output>
+                </div>
+                <input class="range" type="range" id="marketRate" min="0" max="5" step="0.1" value="1.5">
+            </div>
+            <div class="range-field">
+                <div class="range-field__head">
+                    <label class="field__label" for="totalDays">Días totales al vencimiento</label>
+                    <output class="range-field__value" for="totalDays" id="totalDaysOut"></output>
+                </div>
+                <input class="range" type="range" id="totalDays" min="7" max="180" step="1" value="120">
+            </div>
+            <div class="range-field">
+                <div class="range-field__head">
+                    <label class="field__label" for="changeDay">Día en que cambia la tasa</label>
+                    <output class="range-field__value" for="changeDay" id="changeDayOut"></output>
+                </div>
+                <input class="range" type="range" id="changeDay" min="1" max="170" step="1" value="30">
+            </div>
+            <div class="range-field">
+                <div class="range-field__head">
+                    <label class="field__label" for="capital">Tu inversión</label>
+                    <output class="range-field__value" for="capital" id="capitalOut"></output>
+                </div>
+                <input class="range" type="range" id="capital" min="100000" max="5000000" step="50000" value="1000000">
+            </div>
+        </form>
+    </section>
+
+    <div class="metrics">
+        <div class="metric">
+            <div class="metric__label">Valor al vencimiento</div>
+            <div class="metric__value metric__value--sm" id="maturityValue">—</div>
+            <div class="metric__sub">Si mantenés hasta el final</div>
+        </div>
+        <div class="metric">
+            <div class="metric__label">Mejor venta anticipada</div>
+            <div class="metric__value metric__value--sm" id="peakValue">—</div>
+            <div class="metric__sub" id="peakSub"></div>
+        </div>
+        <div class="metric">
+            <div class="metric__label" id="extraLabel">Extra vs. valor técnico</div>
+            <div class="metric__value metric__value--sm" id="extraValue">—</div>
+            <div class="metric__sub" id="extraSub"></div>
+        </div>
+    </div>
+
+    <div class="verdict" id="verdict" role="status">
+        <span class="verdict__icon" id="verdictIcon" aria-hidden="true"></span>
+        <div id="verdictText"></div>
+    </div>
+
+    <section class="card">
+        <div class="card__header">
+            <div>
+                <h2 class="card__title">📈 Evolución del precio</h2>
+                <p class="card__subtitle">Precio de mercado vs. valor técnico (lo que vale si mantenés hasta el vencimiento)</p>
+            </div>
+        </div>
+        <div class="chart-legend">
+            <span class="chart-legend__item"><span class="chart-legend__swatch lecap-swatch--market"></span>Precio de mercado</span>
+            <span class="chart-legend__item"><span class="chart-legend__swatch lecap-swatch--technical"></span>Valor técnico (si mantenés)</span>
+            <span class="chart-legend__item"><span class="chart-legend__swatch chart-legend__swatch--dot lecap-swatch--peak"></span>Punto óptimo de venta</span>
+        </div>
+        <div class="chart-box chart-box--md">
+            <canvas id="lecapChart" role="img" aria-label="Evolución del precio de la LECAP"></canvas>
+        </div>
+    </section>
+
+    <section class="card">
+        <div class="card__header">
+            <div>
+                <h2 class="card__title">📋 Detalle por momento</h2>
+                <p class="card__subtitle">Cuánto obtenés si vendés en cada punto vs. mantener</p>
+            </div>
+        </div>
+        <div class="table-wrap">
+            <table class="table table--compact">
+                <thead><tr>
+                    <th>Momento</th>
+                    <th>Retorno del período</th>
+                    <th>Precio mercado</th>
+                    <th>Valor técnico</th>
+                    <th>Ganancia si vendés</th>
+                    <th>vs. esperar</th>
+                </tr></thead>
+                <tbody id="lecapTable"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <div class="disclaimer">
+        <h4 class="disclaimer__title">⚠️ Aviso</h4>
+        <p>Simulador educativo. Asume una LECAP comprada a una tasa efectiva mensual (mes de 30 días) y un único cambio de la tasa de mercado en el día indicado. No contempla comisiones, impuestos ni costos de reinversión. No constituye asesoramiento financiero.</p>
+    </div>
+
+</main>
+
+<div data-slot="footer"></div>
+
+</body>
+</html>
