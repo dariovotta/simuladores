@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Carry Trade | Revolución Financiera</title>
+    <meta name="description" content="¿Te convenía quedarte en pesos? Calculá el resultado de un carry trade en Argentina y simulá escenarios de tipo de cambio.">
+    <link rel="icon" href="../assets/img/brand/favicon.ico" sizes="any">
+    <link rel="icon" href="../assets/img/brand/favicon.png" type="image/png" sizes="64x64">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/tokens.css">
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="../assets/css/pages/carry-trade.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
+    <script type="module" src="../assets/js/pages/carry-trade.js"></script>
+</head>
+<body data-page="carry-trade" data-accent="green">
+
+<div data-slot="header"></div>
+
+<section class="hero">
+    <h1 class="hero__title">Simulador de <span>Carry Trade</span></h1>
+    <p class="hero__lead">¿Te convenía quedarte en pesos? Ingresá los datos y descubrí si la tasa le ganó al dólar.</p>
+</section>
+
+<main class="main main--narrow">
+
+    <form class="card animate-in" id="carryForm" novalidate>
+        <h2 class="section-label">💵 Tipo de dólar</h2>
+        <div class="form-grid">
+            <div class="field">
+                <label class="field__label" for="dollarType">¿Con qué dólar operaste?</label>
+                <select class="select" id="dollarType">
+                    <option value="oficial" selected>Dólar Oficial</option>
+                    <option value="mep">Dólar MEP (Bolsa)</option>
+                    <option value="ccl">Dólar CCL (Contado con Liqui)</option>
+                    <option value="blue">Dólar Blue</option>
+                </select>
+            </div>
+        </div>
+
+        <h2 class="section-label">📊 Cotizaciones</h2>
+        <div class="form-grid">
+            <div class="field">
+                <label class="field__label" for="startFx">Precio inicial del dólar</label>
+                <div class="input-affix input-affix--prefix">
+                    <span class="input-affix__text">$</span>
+                    <input class="input" type="text" id="startFx" placeholder="Ej: 1.050" required>
+                </div>
+            </div>
+            <div class="field">
+                <label class="field__label" for="endFx">Precio actual del dólar</label>
+                <div class="input-affix input-affix--prefix">
+                    <span class="input-affix__text">$</span>
+                    <input class="input" type="text" id="endFx" placeholder="Ej: 1.120" required>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-label">🏦 Inversión en pesos</h2>
+        <div class="form-grid">
+            <div class="field">
+                <label class="field__label" for="capital">Capital inicial (ARS)</label>
+                <div class="input-affix input-affix--prefix">
+                    <span class="input-affix__text">$</span>
+                    <input class="input" type="text" id="capital" placeholder="Ej: 1.000.000" required>
+                </div>
+            </div>
+        </div>
+        <div class="form-grid carry-rate-grid">
+            <div class="field">
+                <label class="field__label" for="rateType">Tipo de tasa</label>
+                <select class="select" id="rateType">
+                    <option value="tna">TNA (Nominal Anual)</option>
+                    <option value="tem">TEM (Mensual)</option>
+                    <option value="tea">TEA (Efectiva Anual)</option>
+                </select>
+            </div>
+            <div class="field">
+                <label class="field__label" for="rate" id="rateLabel">Tasa (TNA)</label>
+                <div class="input-affix input-affix--suffix">
+                    <input class="input" type="text" id="rate" placeholder="Ej: 32,5" required>
+                    <span class="input-affix__text">%</span>
+                </div>
+            </div>
+            <div class="field">
+                <label class="field__label" for="days">Días invertido</label>
+                <div class="input-affix input-affix--suffix">
+                    <input class="input" type="text" id="days" placeholder="Ej: 30" required>
+                    <span class="input-affix__text">días</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="btn-row">
+            <button type="submit" class="btn btn--primary">Calcular resultado ↗</button>
+            <button type="button" class="btn btn--ghost" id="shareBtn" title="Compartir simulador">↗ Compartir</button>
+            <button type="reset" class="btn btn--ghost" title="Limpiar todos los campos">↺ Resetear</button>
+        </div>
+    </form>
+
+    <section class="card hidden" id="history">
+        <h2 class="section-label">🕓 Últimos cálculos</h2>
+        <div class="history-list" id="historyList"></div>
+        <p class="field__hint">Hacé click en un cálculo para volver a cargarlo.</p>
+    </section>
+
+    <div class="hidden" id="results">
+        <div class="verdict" id="verdict" role="status">
+            <span class="verdict__icon" id="verdictIcon" aria-hidden="true"></span>
+            <div id="verdictText"></div>
+        </div>
+
+        <div class="metrics carry-metrics">
+            <div class="metric" id="pesoCard">
+                <div class="metric__label">Resultado en pesos</div>
+                <div class="metric__value metric__value--sm" id="pesoGain">—</div>
+                <div class="metric__sub" id="pesoGainSub"></div>
+            </div>
+            <div class="metric" id="usdCard">
+                <div class="metric__label">Resultado en dólares</div>
+                <div class="metric__value metric__value--sm" id="usdGain">—</div>
+                <div class="metric__sub" id="usdGainSub"></div>
+            </div>
+            <div class="metric">
+                <div class="metric__label">Dólar de break-even</div>
+                <div class="metric__value metric__value--sm" id="breakeven">—</div>
+                <div class="metric__sub" id="breakevenSub"></div>
+            </div>
+            <div class="metric">
+                <div class="metric__label">Variación del dólar</div>
+                <div class="metric__value metric__value--sm" id="fxChange">—</div>
+                <div class="metric__sub" id="fxChangeSub"></div>
+            </div>
+        </div>
+
+        <div class="carry-annual">
+            <span>🔄 Rendimiento en USD anualizado (TEA equivalente)</span>
+            <strong class="mono" id="usdTea">—</strong>
+        </div>
+
+        <section class="card">
+            <div class="card__header">
+                <div>
+                    <h2 class="card__title">📈 Evolución del dólar de break-even</h2>
+                    <p class="card__subtitle">Precio del dólar a partir del cual el carry trade deja de convenir, día a día</p>
+                </div>
+            </div>
+            <div class="chart-box chart-box--md">
+                <canvas id="breakevenChart" role="img" aria-label="Dólar de break-even en el tiempo"></canvas>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="card__header">
+                <div>
+                    <h2 class="card__title">🎯 Tabla de sensibilidad</h2>
+                    <p class="card__subtitle">Resultado según cuánto se mueva el dólar respecto del precio inicial</p>
+                </div>
+            </div>
+            <div class="table-wrap">
+                <table class="table table--compact">
+                    <thead><tr>
+                        <th>Escenario del dólar</th>
+                        <th>Precio dólar</th>
+                        <th>Resultado (ARS)</th>
+                        <th>Resultado (USD)</th>
+                        <th>¿Ganaste?</th>
+                    </tr></thead>
+                    <tbody id="sensitivity"></tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <div class="disclaimer">
+        <h4 class="disclaimer__title">⚠️ Aviso</h4>
+        <p>Este simulador es de carácter informativo y no constituye asesoramiento financiero. Los resultados son estimativos: la TNA se calcula con interés simple (base 365) y la TEM/TEA con capitalización compuesta. No contempla comisiones, impuestos ni costos de compra/venta de dólares. Verificá siempre los datos antes de tomar decisiones de inversión.</p>
+    </div>
+
+</main>
+
+<div data-slot="footer"></div>
+
+</body>
+</html>

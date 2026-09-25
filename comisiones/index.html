@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparador de Comisiones de Brokers | Revolución Financiera</title>
+    <meta name="description" content="Compará las comisiones de 8 brokers argentinos para acciones, CEDEARs, bonos, ONs, letras, cauciones y más. Incluye IVA y derechos de mercado.">
+    <link rel="icon" href="../assets/img/brand/favicon.ico" sizes="any">
+    <link rel="icon" href="../assets/img/brand/favicon.png" type="image/png" sizes="64x64">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/tokens.css">
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" defer></script>
+    <script type="module" src="../assets/js/pages/comisiones.js"></script>
+</head>
+<body data-page="comisiones">
+
+<div data-slot="header"></div>
+
+<section class="hero">
+    <h1 class="hero__title">Compará <span>comisiones</span> de brokers argentinos</h1>
+    <p class="hero__lead">Simulá cuánto te cobra cada broker por operar. Datos actualizados a <span data-bind="updated">marzo 2026</span>.</p>
+</section>
+
+<main class="main">
+
+    <h2 class="section-label">Elegí el tipo de operación</h2>
+    <div class="chips" id="categories" role="group" aria-label="Tipo de operación"></div>
+
+    <!-- Gráfico -->
+    <section class="card animate-in">
+        <div class="card__header">
+            <div>
+                <h2 class="card__title" id="chartTitle">Comisiones por Acciones</h2>
+                <p class="card__subtitle" id="chartSubtitle">Comisión del broker (%) — Ordenado de menor a mayor</p>
+            </div>
+            <div class="segmented" role="group" aria-label="Modo de operación">
+                <button type="button" class="segmented__btn" data-mode="single" aria-pressed="true">Compra/Venta</button>
+                <button type="button" class="segmented__btn" data-mode="double" aria-pressed="false">Ambas (C+V)</button>
+            </div>
+        </div>
+        <div class="chart-box">
+            <canvas id="rateChart" aria-label="Gráfico de comisiones por broker" role="img"></canvas>
+        </div>
+    </section>
+
+    <!-- Calculadora -->
+    <section class="card animate-in">
+        <div class="card__header">
+            <h2 class="card__title">💰 Calculá tu comisión</h2>
+        </div>
+        <div class="form-grid">
+            <div class="field">
+                <label class="field__label" for="amount">Monto de la operación (ARS)</label>
+                <div class="input-affix input-affix--prefix">
+                    <span class="input-affix__text">$</span>
+                    <input class="input" type="text" id="amount" placeholder="Ej: 1.000.000">
+                </div>
+            </div>
+            <div class="field hidden" id="daysField">
+                <label class="field__label" for="days">Plazo (días)</label>
+                <input class="input" type="number" id="days" min="1" max="365" value="7" inputmode="numeric">
+            </div>
+            <div class="field">
+                <label class="field__label" for="opType">Tipo de operación</label>
+                <select class="select" id="opType">
+                    <option value="single">Compra o Venta</option>
+                    <option value="double">Ambas (Compra + Venta)</option>
+                </select>
+            </div>
+        </div>
+        <div id="results"></div>
+    </section>
+
+    <!-- Planes diferenciales -->
+    <h2 class="section-label section-label--spaced">Brokers con planes diferenciales</h2>
+    <div id="brokerPlans"></div>
+
+    <div class="disclaimer">
+        <h4 class="disclaimer__title">⚠️ Aviso legal</h4>
+        <p>Las comisiones mostradas corresponden a las tarifas publicadas por cada broker para personas humanas operando de forma online (web/app), vigentes a <span data-bind="updated">marzo 2026</span>. Los valores pueden cambiar sin previo aviso. A las comisiones del broker se les suma el IVA (21%) y los derechos de mercado (BYMA/MAE). Este simulador es de carácter informativo y no constituye asesoramiento financiero. Verificá siempre las comisiones actualizadas en la web oficial de cada broker antes de operar.</p>
+    </div>
+
+</main>
+
+<div data-slot="footer"></div>
+
+</body>
+</html>
