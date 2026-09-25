@@ -1,10 +1,10 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { computeCommissions, rateRanking } from '../assets/js/calc/comisiones.js';
-import { computeRotation, recoveryTone } from '../assets/js/calc/rotacion.js';
-import { analyzeBond, amortizationSchedule, priceShock, priceYieldCurve } from '../assets/js/calc/bonos.js';
-import { simulateLecap } from '../assets/js/calc/lecap.js';
-import { computeCarry, growthFactor, sensitivityTable } from '../assets/js/calc/carry.js';
+import { computeCommissions, rateRanking } from '../public/assets/js/calc/comisiones.js';
+import { computeRotation, recoveryTone } from '../public/assets/js/calc/rotacion.js';
+import { analyzeBond, amortizationSchedule, priceShock, priceYieldCurve } from '../public/assets/js/calc/bonos.js';
+import { simulateLecap } from '../public/assets/js/calc/lecap.js';
+import { computeCarry, growthFactor, sensitivityTable } from '../public/assets/js/calc/carry.js';
 
 const close = (a, b, eps = 1e-6) => assert.ok(Math.abs(a - b) < eps, `${a} ≉ ${b}`);
 

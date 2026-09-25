@@ -5,9 +5,9 @@
 // =========================================================
 
 export const BRAND = {
-    name: 'Revolución Financiera',
+    name: 'MisFinanzas',
     tagline: 'Finanzas Personales · Inversiones · Economía',
-    logo: 'assets/img/brand/logo.png',
+    logo: 'assets/img/brand/logo.svg',
 };
 
 export const SIMULATORS = [

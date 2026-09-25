@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { formatTyping, parseLocaleNumber, formatSignedPct, formatARS } from '../assets/js/core/format.js';
+import { formatTyping, parseLocaleNumber, formatSignedPct, formatARS } from '../public/assets/js/core/format.js';
 
 test('parseLocaleNumber entiende formato es-AR y decimales con punto', () => {
     assert.equal(parseLocaleNumber('1.234.567'), 1234567);
