@@ -6,7 +6,7 @@
 
 export const BRAND = {
     name: 'MisFinanzas',
-    tagline: 'Finanzas Personales · Inversiones · Economía',
+    tagline: 'Finanzas personales, inversiones, economía',
     logo: 'assets/img/brand/logo.svg',
 };
 
@@ -14,8 +14,7 @@ export const SIMULATORS = [
     {
         id: 'comisiones',
         path: 'comisiones/',
-        icon: '💼',
-        iconTone: 'blue',
+        icon: 'assets/img/icons/comisiones.svg',
         name: 'Comparador de Comisiones de Brokers',
         shortName: 'Comisiones',
         description: 'Compará las comisiones de 8 brokers argentinos para acciones, CEDEARs, bonos, ONs, letras, cauciones y más. Incluye IVA y derechos de mercado.',
@@ -23,8 +22,7 @@ export const SIMULATORS = [
     {
         id: 'rotacion-ons',
         path: 'rotacion-ons/',
-        icon: '🔄',
-        iconTone: 'green',
+        icon: 'assets/img/icons/rotacion.svg',
         name: 'Simulador de Rotación de ONs',
         shortName: 'Rotación de ONs',
         description: 'Calculá si conviene vender una Obligación Negociable para comprar otra con mejor TIR. Te muestra cuántos meses tardás en recuperar el costo de las comisiones.',
@@ -32,8 +30,7 @@ export const SIMULATORS = [
     {
         id: 'duration',
         path: 'duration/',
-        icon: '📐',
-        iconTone: 'purple',
+        icon: 'assets/img/icons/duration.svg',
         name: 'Duration y Sensibilidad de Bonos',
         shortName: 'Duration',
         description: 'Entendé cómo cambia el precio de un bono cuando se mueve la tasa. Slider interactivo, gráfico de curva precio/tasa y tabla de flujos detallada.',
@@ -41,8 +38,7 @@ export const SIMULATORS = [
     {
         id: 'lecap',
         path: 'lecap/',
-        icon: '📊',
-        iconTone: 'orange',
+        icon: 'assets/img/icons/lecap.svg',
         name: '¿Cuándo vender una LECAP?',
         shortName: 'LECAP',
         description: 'Simulá si te conviene vender una LECAP antes del vencimiento o esperar. Compará el rendimiento de mantener vs vender y reinvertir.',
@@ -50,8 +46,7 @@ export const SIMULATORS = [
     {
         id: 'carry-trade',
         path: 'carry-trade/',
-        icon: '💱',
-        iconTone: 'red',
+        icon: 'assets/img/icons/carry.svg',
         name: 'Simulador de Carry Trade',
         shortName: 'Carry Trade',
         description: 'Calculá el rendimiento de un carry trade en Argentina. Simulá distintos escenarios de tipo de cambio y tasa para ver si conviene la estrategia.',

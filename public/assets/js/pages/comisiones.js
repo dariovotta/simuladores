@@ -6,8 +6,9 @@ import { $, $$, emptyState, escapeHTML, rankBadge, setPressed, toggle } from '..
 import { formatARS, formatNumber } from '../core/format.js';
 import { bindAmountInput, readNumber } from '../core/inputs.js';
 import { chartTheme, createChartSlot, horizontalBarConfig } from '../core/charts.js';
+import { onThemeChange } from '../core/theme.js';
 import { CATEGORIES, DATA_UPDATED } from '../data/brokers.js';
-import { categoryHasTna, computeCommissions, rankTone, rateRanking } from '../calc/comisiones.js';
+import { categoryHasTna, computeCommissions, rateRanking } from '../calc/comisiones.js';
 import { renderBrokerPlans } from '../ui/broker-plans.js';
 
 const state = {
@@ -46,6 +47,7 @@ function init() {
 
     renderChart();
     renderResults();
+    onThemeChange(renderChart);
 }
 
 // ---------- Estado ----------
@@ -102,17 +104,24 @@ function renderChart() {
     chart.render(horizontalBarConfig({
         labels: entries.map((e) => e.name),
         data: entries.map((e) => e.rate),
-        colors: entries.map((_, i) => (i === 0 ? theme.good : i === entries.length - 1 ? theme.bad : theme.neutral)),
+        colors: entries.map((_, i) => (i === 0 ? theme.pos : i === entries.length - 1 ? theme.neg : theme.barNeutral)),
         formatLabel: (value, ctx) => formatValue(value, entries[ctx.dataIndex].isTNA),
         formatTooltip: (ctx) => formatValue(ctx.raw, entries[ctx.dataIndex].isTNA),
         formatTick: (value) => (isFixed ? `$${formatNumber(value)}` : `${value}%`),
     }));
 }
 
+// El más barato en verde, el más caro en rojo, el resto neutro.
+function totalTone(index, total) {
+    if (index === 0) return 'good';
+    if (index === total - 1) return 'bad';
+    return 'text';
+}
+
 function renderResults() {
     const amount = readNumber(els.amount);
     if (!(amount > 0)) {
-        els.results.innerHTML = emptyState('📊', 'Ingresá un monto para ver la comparación de comisiones');
+        els.results.innerHTML = emptyState('Ingresá un monto para ver la comparación de comisiones');
         return;
     }
 
@@ -133,15 +142,15 @@ function renderResults() {
         return `<tr>
             <td class="rank">${rankBadge(i)}</td>
             <td><div class="broker-cell"><img class="broker-cell__logo" src="${siteUrl(r.logo)}" alt="" loading="lazy"><span class="broker-cell__name">${escapeHTML(r.name)}</span></div></td>
-            <td>${rateCell}</td>
+            <td class="rate">${rateCell}</td>
             <td>${formatARS(r.brokerFee)}</td>
             ${calc.showMarketFee ? `<td>${formatARS(r.marketFee)}</td>` : ''}
             ${showIva ? `<td>${formatARS(r.iva)}</td>` : ''}
-            <td><span class="amount tone-${rankTone(i, calc.results.length)}">${formatARS(r.total)}</span></td>
+            <td><span class="amount tone-${totalTone(i, calc.results.length)}">${formatARS(r.total)}</span></td>
         </tr>`;
     }).join('');
 
-    let html = `<div class="table-wrap"><table class="table">
+    let html = `<div class="table-wrap"><table class="table table--numeric table--ranking">
         <thead><tr>
             <th>#</th>
             <th>Broker</th>
@@ -158,7 +167,7 @@ function renderResults() {
         html += `<div class="notice notice--muted"><strong>* TNA</strong> = Tasa Nominal Anual. Estas comisiones se calculan de forma proporcional al plazo de la operación y no son directamente comparables con las comisiones porcentuales flat. El monto efectivo depende del plazo de la operación.</div>`;
     }
     if (calc.savings > 0) {
-        html += `<div class="notice"><strong>💡 Ahorro posible:</strong> Usando <strong>${escapeHTML(calc.cheapest.name)}</strong> en vez de ${escapeHTML(calc.mostExpensive.name)} te ahorrás <strong>${formatARS(calc.savings)}</strong> en esta operación.</div>`;
+        html += `<div class="notice"><strong>Ahorro posible:</strong> Usando <strong>${escapeHTML(calc.cheapest.name)}</strong> en vez de ${escapeHTML(calc.mostExpensive.name)} te ahorrás <strong>${formatARS(calc.savings)}</strong> en esta operación.</div>`;
     }
     els.results.innerHTML = html;
 }

@@ -97,7 +97,6 @@ export const BROKER_PLANS = [
         name: 'IEB+',
         logo: `${LOGOS}ieb.jpeg`,
         badge: 'Modelo Flat',
-        background: 'linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%)',
         note: {
             comisiones: 'IEB+ funciona con un modelo diferente: en lugar de cobrar comisiones por operación, cobra una <strong>tarifa fija mensual</strong>. Esto puede ser muy conveniente si operás con frecuencia.',
             rotacion: 'IEB+ cobra una tarifa fija mensual y no cobra comisiones por operación. Si rotás ONs seguido, el costo de cada rotación es $0 en comisiones (solo pagás derechos de mercado).',
@@ -112,14 +111,13 @@ export const BROKER_PLANS = [
         name: 'IOL',
         logo: `${LOGOS}iol.png`,
         badge: 'Planes Premium',
-        background: 'linear-gradient(135deg, #6C3FEE 0%, #5028CC 100%)',
         note: {
             default: 'IOL ofrece planes con comisiones reducidas según tu volumen operado por mes. En el simulador usamos las comisiones del plan Gold (estándar).',
         },
         tiers: [
-            { name: 'Gold*', price: '$0 — $7.5M', desc: 'Volumen operado x mes. Comisiones estándar.', background: 'linear-gradient(135deg, #C5A55A 0%, #A8893E 100%)' },
-            { name: 'Platinum*', price: '$7.5M — $50M', desc: 'Volumen operado x mes. Comisiones reducidas.', background: 'linear-gradient(135deg, #9CA3AF 0%, #7B8290 100%)' },
-            { name: 'Black*', price: '$50M+', desc: 'Volumen operado x mes. Las comisiones más bajas de IOL.', background: 'linear-gradient(135deg, #1F2937 0%, #111827 100%)' },
+            { name: 'Gold*', price: '$0 — $7.5M', desc: 'Volumen operado x mes. Comisiones estándar.' },
+            { name: 'Platinum*', price: '$7.5M — $50M', desc: 'Volumen operado x mes. Comisiones reducidas.' },
+            { name: 'Black*', price: '$50M+', desc: 'Volumen operado x mes. Las comisiones más bajas de IOL.' },
         ],
     },
     {
@@ -127,15 +125,14 @@ export const BROKER_PLANS = [
         name: 'Veta Cap',
         logo: `${LOGOS}vetacap.png`,
         badge: 'Planes Flat',
-        background: 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)',
         note: {
             comisiones: 'Veta Cap ofrece planes flat con tarifa fija mensual y comisión 0% en operaciones. En el simulador usamos las comisiones del plan Web (Persona Física).',
             rotacion: 'Veta Cap ofrece planes flat con tarifa fija mensual y comisión 0% en operaciones. Ideal si rotás ONs frecuentemente.',
         },
         tiers: [
-            { name: '🟢 Flat Start', price: '$85 mil', desc: 'por mes + IVA. Descubierto: 150% valorizada, límite $80M.' },
-            { name: '🟢 Flat Advance', price: '$160 mil', desc: 'por mes + IVA. Descubierto: 230% valorizada, límite $180M.' },
-            { name: '🟢 Flat Elite', price: '$285 mil', desc: 'por mes + IVA. Descubierto: 320% valorizada, límite $500M.' },
+            { name: 'Flat Start', price: '$85 mil', desc: 'por mes + IVA. Descubierto: 150% valorizada, límite $80M.' },
+            { name: 'Flat Advance', price: '$160 mil', desc: 'por mes + IVA. Descubierto: 230% valorizada, límite $180M.' },
+            { name: 'Flat Elite', price: '$285 mil', desc: 'por mes + IVA. Descubierto: 320% valorizada, límite $500M.' },
         ],
     },
     {
@@ -143,7 +140,6 @@ export const BROKER_PLANS = [
         name: 'Eco Valores',
         logo: `${LOGOS}ecovalores.png`,
         badge: 'Club de los Millones',
-        background: 'linear-gradient(135deg, #059669 0%, #047857 100%)',
         note: {
             default: 'Eco Valores premia el volumen con descuentos automáticos. En el simulador usamos las comisiones estándar (sin club).',
         },

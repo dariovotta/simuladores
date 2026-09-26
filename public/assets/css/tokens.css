@@ -1,89 +1,83 @@
 /* =========================================================
-   DESIGN TOKENS
-   Único lugar donde viven colores, tipografías, radios y sombras.
-   Para cambiar la estética del sitio, empezá por acá.
+   DESIGN TOKENS (design system MisInversiones, primario verde)
+   Único lugar donde viven colores, tipografía, radios y sombras.
+   Tema oscuro: data-theme="dark" en <html> (ver assets/js/theme-init.js).
    ========================================================= */
 :root {
     /* Superficies */
-    --bg-primary: #FAFBFC;
-    --bg-secondary: #FFFFFF;
-    --bg-tertiary: #F1F3F5;
+    --bg: #F4F6F9;
+    --card: #FFFFFF;
+    --subtle: #F1F3F7;
+    --chip: #EBEEF3;
+    --border: #E3E7ED;
 
     /* Texto */
-    --text-primary: #1A1D23;
-    --text-secondary: #5A6270;
-    --text-muted: #8C939E;
+    --text: #0F1B2D;
+    --muted: #667085;
 
-    /* Marca */
-    --accent: #E63B2E;
-    --accent-light: #FEF0EF;
-    --accent-dark: #C4291E;
-    --accent-ring: rgba(230, 59, 46, 0.1);
-    --accent-shadow: rgba(230, 59, 46, 0.25);
+    /* Primario */
+    --primary: #0B7A55;
+    --primarySoft: #E1F2EA;
+    --primaryInk: #07573C;
+    --on-primary: #FFFFFF;
 
-    /* Bordes */
-    --border: #E5E8EB;
-    --border-light: #F0F2F4;
-
-    /* Estados */
-    --success: #22C55E;
-    --success-strong: #16A34A;
-    --success-light: #F0FDF4;
-    --success-text: #166534;
-    --warning: #F59E0B;
-    --warning-strong: #D97706;
-    --warning-light: #FFFBEB;
-    --warning-text: #92400E;
-    --danger: #EF4444;
-    --danger-strong: #DC2626;
-    --danger-light: #FEF2F2;
-    --danger-text: #991B1B;
-    --info: #3B82F6;
-    --info-light: #EFF6FF;
-    --info-text: #1E40AF;
-
-    /* Superficies oscuras (hero / footer) */
-    --hero-from: #2D3340;
-    --hero-to: #434D5E;
-    --footer-bg: #3D4452;
-    --on-dark: #FFFFFF;
-    --on-dark-muted: rgba(255, 255, 255, 0.55);
+    /* Resultados (solo marcan ganancia / pérdida, nunca son acento) */
+    --pos: #12925A;
+    --posSoft: #E3F5EC;
+    --neg: #D92D43;
+    --negSoft: #FCE8EB;
+    --warn: #B54708;
+    --warnSoft: #FDF0E3;
+    --barNeutral: #C9D0DA;
 
     /* Tipografía */
-    --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    --font-mono: 'Space Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-
-    /* Sombras */
-    --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
-    --shadow-md: 0 4px 16px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
-    --shadow-lg: 0 12px 40px rgba(0,0,0,0.08);
+    --font-sans: 'DM Sans', system-ui, sans-serif;
 
     /* Radios */
-    --radius-sm: 8px;
-    --radius-md: 12px;
-    --radius-lg: 16px;
-    --radius-xl: 20px;
-    --radius-pill: 100px;
+    --radius-card: 22px;
+    --radius-list: 18px;
+    --radius-note: 14px;
+    --radius-input: 12px;
+    --radius-tile: 12px;
+    --radius-rank: 8px;
+    --radius-pill: 999px;
+
+    /* Sombras (las cards no tienen) */
+    --shadow-seg: 0 1px 3px rgba(15, 27, 45, .12);
+    --shadow-thumb: 0 1px 3px rgba(15, 27, 45, .2);
+    --shadow-menu: 0 12px 32px rgba(5, 10, 18, .16);
 
     /* Layout */
-    --container: 1100px;
-    --container-narrow: 900px;
-    --gutter: 24px;
+    --topbar-h: 68px;
+    --topbar-h-mobile: 60px;
+    --page-max: 1140px;
+    --page-max-narrow: 900px;
 
-    /* Acento propio de cada simulador (se sobreescribe por página) */
-    --sim-accent: var(--accent);
-    --sim-accent-light: var(--accent-light);
-    --sim-accent-ring: var(--accent-ring);
+    color-scheme: light;
 }
 
-/* Variantes de acento por simulador: <body data-accent="blue|green"> */
-[data-accent="blue"] {
-    --sim-accent: #3B82F6;
-    --sim-accent-light: #EFF6FF;
-    --sim-accent-ring: rgba(59, 130, 246, 0.12);
-}
-[data-accent="green"] {
-    --sim-accent: #16A34A;
-    --sim-accent-light: #F0FDF4;
-    --sim-accent-ring: rgba(22, 163, 74, 0.12);
+:root[data-theme="dark"] {
+    --bg: #0B1017;
+    --card: #131A24;
+    --subtle: #18202C;
+    --chip: #1C2531;
+    --border: #232D3B;
+    --text: #E8EDF4;
+    --muted: #8A95A7;
+
+    --primary: #22A673;
+    --primarySoft: #0F2A20;
+    --primaryInk: #86E3BD;
+
+    --pos: #3DD68C;
+    --posSoft: #10301F;
+    --neg: #FF6B7D;
+    --negSoft: #3A151C;
+    --warn: #F5A04A;
+    --warnSoft: #33230F;
+    --barNeutral: #3A4658;
+
+    --shadow-menu: 0 12px 32px rgba(0, 0, 0, .45);
+
+    color-scheme: dark;
 }

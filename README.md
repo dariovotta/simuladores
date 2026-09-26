@@ -62,28 +62,32 @@ public/                     Todo lo que se publica
   <simulador>/index.html    Una carpeta por simulador (solo markup)
   assets/
     css/
-      tokens.css              Colores, tipografías, radios, sombras  ← punto de entrada para la nueva estética
-      base.css                Reset, layout, header, navegación, hero, footer
+      tokens.css              Colores (claro y oscuro), tipografía, radios, sombras  ← punto de entrada de la estética
+      base.css                Reset, layout, header (web y móvil), título de página
       components.css          Cards, formularios, tablas, métricas, avisos, sliders, planes de brokers…
       pages/*.css             Ajustes propios de cada página
     js/
+      theme-init.js           Aplica el tema guardado antes de pintar (evita el parpadeo)
       config/site.js          Marca y catálogo de simuladores (home + navegación)
-      core/                   Utilidades: formato es-AR, inputs, DOM, layout, gráficos
+      core/                   Utilidades: formato es-AR, inputs, DOM, layout, tema, íconos, gráficos
       data/brokers.js         Comisiones de brokers, derechos de mercado, IVA y planes
       calc/                   Lógica financiera pura (sin DOM), una por simulador
       ui/                     Componentes de UI compartidos
       pages/                  Controlador de cada página: lee inputs → calc → render
     img/
       brand/                  Logo (también se usa como favicon)
+      icons/                  Íconos de las tarjetas de la home
       brokers/                Logos de brokers
 tests/                      Tests unitarios de calc/ y core/format.js
 ```
 
 ### Cómo tocar cada cosa
 
-- **Cambiar la estética:** empezar por `public/assets/css/tokens.css` (variables). Los componentes
-  solo usan esas variables. Cada simulador puede tener un acento propio con
-  `<body data-accent="blue|green">`. Los gráficos leen los colores de los tokens.
+- **Cambiar la estética:** empezar por `public/assets/css/tokens.css` (variables del design system
+  MisInversiones con primario verde). Los componentes solo usan esas variables. El tema oscuro
+  redefine los mismos tokens en `:root[data-theme="dark"]`; el botón del header lo alterna y lo
+  guarda en `localStorage`. Los gráficos leen los colores de los tokens y se redibujan al cambiar
+  de tema.
 - **Actualizar comisiones:** editar `public/assets/js/data/brokers.js` (y `DATA_UPDATED`). La misma
   data alimenta el Comparador y la Rotación de ONs.
 - **Cambiar nombre o logo:** `public/assets/js/config/site.js` (`BRAND`) y `public/assets/img/brand/logo.svg`.

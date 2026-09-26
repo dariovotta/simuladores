@@ -1,0 +1,20 @@
+/* =========================================================
+   404
+   ========================================================= */
+.notfound {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+    padding: clamp(40px, 6vw, 80px) 0;
+}
+.notfound__code {
+    font-size: clamp(56px, 7vw, 88px);
+    font-weight: 800;
+    letter-spacing: -.04em;
+    line-height: 1;
+    color: var(--primary);
+}
+.notfound .page-lead { max-width: 420px; margin-bottom: 12px; }
+.notfound__cta { width: 260px; max-width: 100%; }
