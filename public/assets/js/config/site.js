@@ -6,7 +6,6 @@
 
 export const BRAND = {
     name: 'MisFinanzas',
-    tagline: 'Finanzas personales, inversiones, economía',
     logo: 'assets/img/brand/logo.svg',
 };
 
