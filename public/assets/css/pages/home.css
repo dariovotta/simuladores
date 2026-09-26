@@ -1,8 +1,7 @@
 /* =========================================================
    HOME: listado de simuladores
    ========================================================= */
-.home-head { gap: 12px; margin-bottom: 32px; }
-.home-head__logo { width: 56px; height: 56px; border-radius: 14px; margin-bottom: 6px; }
+.home-head { margin-bottom: 24px; }
 .home-head__title { font-size: clamp(28px, 3vw, 40px); line-height: 1.12; }
 
 .sim-grid {

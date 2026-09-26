@@ -46,10 +46,7 @@ function renderHeader(currentId) {
         <div class="topbar__inner">
             <a class="brand" href="${siteUrl()}">
                 <img class="brand__logo" src="${brandLogo}" alt="" width="32" height="32">
-                <span class="brand__text">
-                    <span class="brand__name">${escapeHTML(BRAND.name)}</span>
-                    <span class="brand__sub">${escapeHTML(BRAND.tagline)}</span>
-                </span>
+                <span class="brand__name">${escapeHTML(BRAND.name)}</span>
             </a>
             <nav class="topnav" aria-label="Simuladores">${webNav}</nav>
             ${current ? `<button type="button" class="menu-toggle" aria-expanded="false" aria-controls="mobileMenu">

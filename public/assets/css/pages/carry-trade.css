@@ -4,7 +4,7 @@
 #carryForm .section-label { margin-bottom: 10px; }
 
 .carry-metrics {
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
     gap: 12px;
 }
 
