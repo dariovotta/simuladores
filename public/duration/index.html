@@ -5,31 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Duration y Sensibilidad de Bonos | MisFinanzas</title>
     <meta name="description" content="Entendé cómo cambia el precio de un bono cuando se mueve la tasa: duration, duration modificada, curva precio/tasa y flujos.">
+    <script src="../assets/js/theme-init.js"></script>
     <link rel="icon" href="../assets/img/brand/logo.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/tokens.css">
     <link rel="stylesheet" href="../assets/css/base.css">
     <link rel="stylesheet" href="../assets/css/components.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
     <script type="module" src="../assets/js/pages/duration.js"></script>
 </head>
-<body data-page="duration" data-accent="blue">
+<body data-page="duration">
 
 <div data-slot="header"></div>
 
-<section class="hero">
-    <h1 class="hero__title">Entendé la <span>Duration</span> y Sensibilidad de un bono</h1>
-    <p class="hero__lead">Simulá cómo cambia el precio de un bono cuando se mueve la tasa. Modificá los parámetros y velo en tiempo real.</p>
-</section>
-
 <main class="main">
 
-    <section class="card animate-in">
+    <header class="page-head">
+        <h1 class="page-title">Entendé la <span>Duration</span> y Sensibilidad de un bono</h1>
+        <p class="page-lead">Simulá cómo cambia el precio de un bono cuando se mueve la tasa. Modificá los parámetros y velo en tiempo real.</p>
+    </header>
+
+    <section class="card">
         <div class="card__header">
             <div>
-                <h2 class="card__title">🔧 Parámetros del bono</h2>
+                <h2 class="card__title">Parámetros del bono</h2>
                 <p class="card__subtitle">Modificá los valores para ver cómo cambian la duration y la sensibilidad</p>
             </div>
         </div>
@@ -71,26 +72,26 @@
         </form>
     </section>
 
-    <div class="metrics animate-in">
+    <div class="metrics">
         <div class="metric">
             <div class="metric__label">Duration</div>
-            <div class="metric__value tone-info" id="metDuration">—</div>
+            <div class="metric__value metric__value--lg tone-info" id="metDuration">—</div>
             <div class="metric__sub">años</div>
         </div>
         <div class="metric">
             <div class="metric__label">Duration modificada</div>
-            <div class="metric__value tone-accent" id="metModDuration">—</div>
+            <div class="metric__value metric__value--lg" id="metModDuration">—</div>
             <div class="metric__sub">% por cada 1% de tasa</div>
         </div>
         <div class="metric">
             <div class="metric__label">Precio del bono</div>
-            <div class="metric__value tone-good" id="metPrice">—</div>
+            <div class="metric__value metric__value--lg tone-good" id="metPrice">—</div>
             <div class="metric__sub">USD</div>
         </div>
     </div>
 
-    <div class="callout callout--info">
-        <h2 class="callout__title">📘 ¿Qué significan estos números?</h2>
+    <div class="callout">
+        <h2 class="callout__title">¿Qué significan estos números?</h2>
         <p><strong>Duration:</strong> es el tiempo promedio ponderado en que recuperás tu inversión. Un bono con duration 4,2 años significa que, en promedio, tardás 4,2 años en recuperar tu plata vía cupones y capital.</p>
         <p><strong>Duration modificada:</strong> mide la sensibilidad del precio ante cambios en la tasa. Si la DM es 3,8, significa que por cada 1% que suba la tasa, el precio del bono baja aprox. 3,8% (y viceversa).</p>
         <p><strong>Regla clave:</strong> a mayor duration, más sensible es el bono a cambios de tasa. Los bonos largos son más volátiles que los cortos.</p>
@@ -99,27 +100,27 @@
     <section class="card">
         <div class="card__header">
             <div>
-                <h2 class="card__title">🎛️ Simulador de sensibilidad</h2>
+                <h2 class="card__title">Simulador de sensibilidad</h2>
                 <p class="card__subtitle">Mové el slider para ver cómo cambia el precio del bono ante variaciones de tasa</p>
             </div>
         </div>
 
         <div class="range-field__head">
             <label class="range-field__title" for="shock">Cambio en la tasa:</label>
-            <span class="pill pill--lg pill--neutral" id="shockValue">0,00%</span>
+            <span class="pill pill--lg" id="shockValue">0,00%</span>
         </div>
-        <input class="range range--diverging" type="range" id="shock" min="-600" max="600" value="0" step="5">
+        <div class="range-center"><input class="range" type="range" id="shock" min="-600" max="600" value="0" step="5"></div>
         <div class="range-field__scale"><span>-6,00%</span><span>Tasa actual</span><span>+6,00%</span></div>
 
         <div class="metrics metrics--flush">
             <div class="metric metric--flat" id="shockPriceCard">
                 <div class="metric__label">Nuevo precio</div>
-                <div class="metric__value metric__value--sm" id="shockPrice">—</div>
+                <div class="metric__value" id="shockPrice">—</div>
                 <div class="metric__sub" id="shockPriceSub"></div>
             </div>
             <div class="metric metric--flat" id="shockPnlCard">
                 <div class="metric__label">Ganancia / Pérdida</div>
-                <div class="metric__value metric__value--sm" id="shockPnl">—</div>
+                <div class="metric__value" id="shockPnl">—</div>
                 <div class="metric__sub" id="shockPnlSub"></div>
             </div>
         </div>
@@ -128,7 +129,7 @@
     <section class="card">
         <div class="card__header">
             <div>
-                <h2 class="card__title">📈 Curva precio vs. tasa</h2>
+                <h2 class="card__title">Curva precio vs. tasa</h2>
                 <p class="card__subtitle">El punto marca el precio actual. Observá cómo la relación no es lineal (convexidad)</p>
             </div>
         </div>
@@ -140,7 +141,7 @@
     <section class="card">
         <div class="card__header">
             <div>
-                <h2 class="card__title">📋 Detalle de flujos de caja</h2>
+                <h2 class="card__title">Detalle de flujos de caja</h2>
                 <p class="card__subtitle">Cada flujo ponderado por su valor actual contribuye a la duration</p>
             </div>
         </div>
@@ -148,13 +149,12 @@
     </section>
 
     <div class="disclaimer">
-        <h4 class="disclaimer__title">⚠️ Aviso</h4>
+        <h4 class="disclaimer__title">Aviso</h4>
         <p>Este simulador es educativo. Los cálculos asumen un bono con tasa fija en USD que paga cupones periódicos sobre el valor residual y amortiza según el esquema elegido. No contempla riesgo de crédito, liquidez ni spread. Las fórmulas usan la definición clásica de Duration (Macaulay) y Duration Modificada.</p>
     </div>
 
 </main>
 
-<div data-slot="footer"></div>
 
 </body>
 </html>

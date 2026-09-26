@@ -26,13 +26,13 @@ export function setPressed(buttons, activeButton) {
 }
 
 /** Plantilla reutilizable para el estado "sin datos". */
-export function emptyState(icon, message) {
-    return `<div class="empty-state"><div class="empty-state__icon">${icon}</div><p>${escapeHTML(message)}</p></div>`;
+export function emptyState(message) {
+    return `<div class="empty-state"><p>${escapeHTML(message)}</p></div>`;
 }
 
-/** Medalla de ranking: 🥇🥈🥉 y luego número. */
+/** Badge numérico de ranking (la posición 1 va destacada). */
 export function rankBadge(index) {
-    return ['🥇', '🥈', '🥉'][index] ?? `<span class="rank-badge">${index + 1}</span>`;
+    return `<span class="rank-badge${index === 0 ? ' rank-badge--first' : ''}">${index + 1}</span>`;
 }
 
 let toastTimer;

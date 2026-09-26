@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comparador de Comisiones de Brokers | MisFinanzas</title>
     <meta name="description" content="Compará las comisiones de 8 brokers argentinos para acciones, CEDEARs, bonos, ONs, letras, cauciones y más. Incluye IVA y derechos de mercado.">
+    <script src="../assets/js/theme-init.js"></script>
     <link rel="icon" href="../assets/img/brand/logo.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/tokens.css">
     <link rel="stylesheet" href="../assets/css/base.css">
     <link rel="stylesheet" href="../assets/css/components.css">
@@ -20,18 +21,18 @@
 
 <div data-slot="header"></div>
 
-<section class="hero">
-    <h1 class="hero__title">Compará <span>comisiones</span> de brokers argentinos</h1>
-    <p class="hero__lead">Simulá cuánto te cobra cada broker por operar. Datos actualizados a <span data-bind="updated">marzo 2026</span>.</p>
-</section>
-
 <main class="main">
+
+    <header class="page-head">
+        <h1 class="page-title">Compará <span>comisiones</span> de brokers argentinos</h1>
+        <p class="page-lead">Simulá cuánto te cobra cada broker por operar. Datos actualizados a <span data-bind="updated">marzo 2026</span>.</p>
+    </header>
 
     <h2 class="section-label">Elegí el tipo de operación</h2>
     <div class="chips" id="categories" role="group" aria-label="Tipo de operación"></div>
 
     <!-- Gráfico -->
-    <section class="card animate-in">
+    <section class="card">
         <div class="card__header">
             <div>
                 <h2 class="card__title" id="chartTitle">Comisiones por Acciones</h2>
@@ -48,9 +49,9 @@
     </section>
 
     <!-- Calculadora -->
-    <section class="card animate-in">
+    <section class="card">
         <div class="card__header">
-            <h2 class="card__title">💰 Calculá tu comisión</h2>
+            <h2 class="card__title">Calculá tu comisión</h2>
         </div>
         <div class="form-grid">
             <div class="field">
@@ -80,13 +81,12 @@
     <div id="brokerPlans"></div>
 
     <div class="disclaimer">
-        <h4 class="disclaimer__title">⚠️ Aviso legal</h4>
+        <h4 class="disclaimer__title">Aviso legal</h4>
         <p>Las comisiones mostradas corresponden a las tarifas publicadas por cada broker para personas humanas operando de forma online (web/app), vigentes a <span data-bind="updated">marzo 2026</span>. Los valores pueden cambiar sin previo aviso. A las comisiones del broker se les suma el IVA (21%) y los derechos de mercado (BYMA/MAE). Este simulador es de carácter informativo y no constituye asesoramiento financiero. Verificá siempre las comisiones actualizadas en la web oficial de cada broker antes de operar.</p>
     </div>
 
 </main>
 
-<div data-slot="footer"></div>
 
 </body>
 </html>

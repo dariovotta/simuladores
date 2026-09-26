@@ -4,7 +4,9 @@
 import { mountLayout } from '../core/layout.js';
 import { $ } from '../core/dom.js';
 import { formatNumber, formatSignedPct } from '../core/format.js';
-import { chartTheme, createChartSlot, tooltipStyle } from '../core/charts.js';
+import { axisStyle, chartTheme, createChartSlot, highlightPoint, mainLine, tooltipStyle } from '../core/charts.js';
+import { rangePercent, setRangeFill } from '../core/inputs.js';
+import { onThemeChange } from '../core/theme.js';
 import { analyzeBond, priceShock, priceYieldCurve } from '../calc/bonos.js';
 
 const els = {};
@@ -31,15 +33,16 @@ function init() {
     mountLayout();
     for (const id of ['nominal', 'coupon', 'years', 'yield', 'frequency', 'amortization', 'shock',
         'metDuration', 'metModDuration', 'metPrice', 'shockValue', 'shockPrice', 'shockPriceSub',
-        'shockPnl', 'shockPnlSub', 'shockPriceCard', 'shockPnlCard', 'cashflows']) {
+        'shockPnl', 'shockPnlSub', 'cashflows']) {
         els[id] = $(`#${id}`);
     }
-    chart = createChartSlot($('#priceChart'), { animate: false });
+    chart = createChartSlot($('#priceChart'));
 
     $('#bondForm').addEventListener('input', update);
     $('#bondForm').addEventListener('change', update);
     els.shock.addEventListener('input', () => renderShock(readParams()));
     update();
+    onThemeChange(update);
 }
 
 function update() {
@@ -61,8 +64,9 @@ function renderShock(params) {
     const tone = delta === 0 ? 'neutral' : shock.pnl >= 0 ? 'good' : 'bad';
 
     els.shockValue.textContent = formatSignedPct(delta);
-    // Suba de tasa → rojo, baja → verde.
-    els.shockValue.className = `pill pill--${delta > 0 ? 'bad' : delta < 0 ? 'good' : 'neutral'}`;
+    // El relleno sale del centro: verde si la tasa baja, rojo si sube.
+    const pct = rangePercent(els.shock);
+    setRangeFill(els.shock, Math.min(50, pct), Math.max(50, pct), delta < 0 ? 'var(--pos)' : 'var(--neg)');
 
     els.shockPrice.textContent = `USD ${formatNumber(shock.newPrice, 2)}`;
     els.shockPriceSub.textContent = `Tasa: ${formatNumber(shock.newYield, 2)}%`;
@@ -70,38 +74,27 @@ function renderShock(params) {
     els.shockPnl.textContent = `${sign}USD ${formatNumber(Math.abs(shock.pnl), 2)}`;
     els.shockPnlSub.textContent = `${formatSignedPct(shock.pnlPct)} del precio`;
 
-    for (const card of [els.shockPriceCard, els.shockPnlCard]) {
-        card.className = `metric ${tone === 'neutral' ? 'metric--flat' : `metric--${tone}`}`;
-    }
     for (const value of [els.shockPrice, els.shockPnl]) {
-        value.className = `metric__value metric__value--sm${tone === 'neutral' ? '' : ` tone-${tone}`}`;
+        value.className = `metric__value${tone === 'neutral' ? '' : ` tone-${tone}`}`;
     }
 }
 
 function renderChart(params) {
     const theme = chartTheme();
     const { points, currentIndex } = priceYieldCurve(params);
-    const bodyStyle = getComputedStyle(document.body);
-    const accent = bodyStyle.getPropertyValue('--sim-accent').trim() || theme.info;
-    const accentFill = bodyStyle.getPropertyValue('--sim-accent-ring').trim() || 'rgba(59, 130, 246, 0.1)';
+    const dot = highlightPoint(theme);
 
     chart.render({
         type: 'line',
         data: {
             labels: points.map((p) => `${formatNumber(p.rate, 2)}%`),
-            datasets: [{
+            datasets: [mainLine(theme, {
                 data: points.map((p) => p.price),
-                borderColor: accent,
-                backgroundColor: accentFill,
-                fill: true,
-                tension: 0.4,
-                borderWidth: 3,
-                pointRadius: points.map((_, i) => (i === currentIndex ? 8 : 0)),
-                pointHoverRadius: 6,
-                pointBackgroundColor: accent,
-                pointBorderColor: '#fff',
-                pointBorderWidth: 2,
-            }],
+                pointRadius: points.map((_, i) => (i === currentIndex ? dot.radius : 0)),
+                pointBackgroundColor: dot.fill,
+                pointBorderColor: dot.stroke,
+                pointBorderWidth: dot.strokeWidth,
+            })],
         },
         options: {
             responsive: true,
@@ -118,16 +111,14 @@ function renderChart(params) {
                 },
             },
             scales: {
-                x: {
-                    grid: { color: theme.grid },
-                    ticks: { font: { family: theme.fontMono, size: 10 }, color: theme.muted, maxTicksLimit: 12 },
-                    title: { display: true, text: 'Tasa (%)', font: { family: theme.fontSans, size: 13, weight: 600 }, color: theme.textSecondary },
-                },
-                y: {
-                    grid: { color: theme.grid },
-                    ticks: { font: { family: theme.fontMono, size: 11 }, color: theme.muted, callback: (v) => `USD ${formatNumber(v, 1)}` },
-                    title: { display: true, text: 'Precio', font: { family: theme.fontSans, size: 13, weight: 600 }, color: theme.textSecondary },
-                },
+                x: axisStyle(theme, {
+                    ticks: { maxTicksLimit: 12 },
+                    title: { display: true, text: 'Tasa (%)', color: theme.muted, font: { family: theme.font, size: 12, weight: 700 } },
+                }),
+                y: axisStyle(theme, {
+                    ticks: { callback: (v) => `USD ${formatNumber(v, 1)}` },
+                    title: { display: true, text: 'Precio', color: theme.muted, font: { family: theme.font, size: 12, weight: 700 } },
+                }),
             },
         },
     });
@@ -162,13 +153,13 @@ function renderCashflows(bond) {
                 <tbody>${rows}</tbody>
                 <tfoot><tr>
                     <td>Total</td><td></td><td></td><td></td><td></td>
-                    <td class="mono">${formatNumber(bond.price, 2)}</td>
-                    <td class="mono">${formatNumber(totalWeight * 100, 2)}%</td>
-                    <td class="mono tone-info">${formatNumber(totalWeightedTime, 4)}</td>
+                    <td>${formatNumber(bond.price, 2)}</td>
+                    <td>${formatNumber(totalWeight * 100, 2)}%</td>
+                    <td class="tone-info">${formatNumber(totalWeightedTime, 4)}</td>
                 </tr></tfoot>
             </table>
         </div>
-        <div class="notice notice--info"><strong>Duration</strong> = Σ (Peso × Tiempo) = <strong>${formatNumber(totalWeightedTime, 4)} años</strong></div>`;
+        <div class="notice"><strong>Duration</strong> = Σ (Peso × Tiempo) = <strong>${formatNumber(totalWeightedTime, 4)} años</strong></div>`;
 }
 
 init();

@@ -4,24 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página no encontrada | MisFinanzas</title>
+    <script src="/assets/js/theme-init.js"></script>
     <link rel="icon" href="/assets/img/brand/logo.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,700&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/tokens.css">
     <link rel="stylesheet" href="/assets/css/base.css">
     <link rel="stylesheet" href="/assets/css/components.css">
+    <link rel="stylesheet" href="/assets/css/pages/notfound.css">
+    <script type="module" src="/assets/js/pages/notfound.js"></script>
 </head>
-<body>
-<section class="hero">
-    <h1 class="hero__title">Página no <span>encontrada</span></h1>
-    <p class="hero__lead">El simulador que buscás no existe o cambió de dirección.</p>
-</section>
+<body data-page="404">
+
+<div data-slot="header"></div>
+
 <main class="main main--narrow">
-    <div class="empty-state">
-        <div class="empty-state__icon">🧭</div>
-        <p><a class="btn btn--primary" href="/">Ver todos los simuladores</a></p>
+    <div class="notfound">
+        <span class="notfound__code">404</span>
+        <h1 class="page-title">Página no <span>encontrada</span></h1>
+        <p class="page-lead">El simulador que buscás no existe o cambió de dirección.</p>
+        <a class="btn btn--primary notfound__cta" href="/">Ver todos los simuladores</a>
     </div>
 </main>
+
 </body>
 </html>

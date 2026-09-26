@@ -2,11 +2,11 @@
    CARRY TRADE
    ========================================================= */
 #carryForm .section-label { margin-bottom: 10px; }
-#carryForm .form-grid { margin-bottom: 22px; }
 
-.carry-rate-grid { grid-template-columns: 1.2fr 1fr 1fr; }
-
-.carry-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.carry-metrics {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: 12px;
+}
 
 .carry-annual {
     display: flex;
@@ -14,17 +14,19 @@
     justify-content: space-between;
     gap: 12px;
     flex-wrap: wrap;
-    padding: 16px 22px;
-    margin-bottom: 28px;
-    background: var(--bg-secondary);
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    background: var(--card);
     border: 1px solid var(--border);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-list);
     font-size: 14px;
-    color: var(--text-secondary);
+    font-weight: 600;
+    color: var(--muted);
 }
-.carry-annual strong { font-size: 18px; }
+.carry-annual strong { font-size: 20px; font-weight: 700; letter-spacing: -.02em; }
 
 /* Historial */
+.history-title { margin-bottom: 14px; }
 .history-list { display: flex; flex-direction: column; gap: 8px; }
 .history-item {
     display: flex;
@@ -35,17 +37,14 @@
     text-align: left;
     padding: 12px 16px;
     border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    background: var(--bg-primary);
-    cursor: pointer;
-    transition: border-color .2s, background .2s;
+    border-radius: var(--radius-note);
+    background: var(--card);
+    color: var(--text);
 }
-.history-item:hover { border-color: var(--sim-accent); background: var(--sim-accent-light); }
-.history-item__meta { font-size: 12px; color: var(--text-muted); }
-.history-item__title { font-size: 14px; font-weight: 600; }
+.history-item:hover { background: var(--subtle); }
+.history-item__meta { font-size: 12px; color: var(--muted); }
+.history-item__title { font-size: 14px; font-weight: 700; }
 
 @media (max-width: 640px) {
-    .carry-rate-grid,
-    .carry-metrics { grid-template-columns: 1fr; }
     .history-item { flex-direction: column; align-items: flex-start; }
 }

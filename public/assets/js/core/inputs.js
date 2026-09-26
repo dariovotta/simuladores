@@ -52,3 +52,25 @@ export function writeNumber(input, value, { decimals = 0 } = {}) {
         maximumFractionDigits: decimals,
     });
 }
+
+/** Porcentaje (0–100) de la posición de un <input type="range">. */
+export function rangePercent(input, value = Number(input.value)) {
+    const min = Number(input.min || 0);
+    const max = Number(input.max || 100);
+    return max > min ? ((value - min) / (max - min)) * 100 : 0;
+}
+
+/** Pinta el relleno del track entre `start` y `end` (en %), con el color indicado. */
+export function setRangeFill(input, start, end, color = 'var(--primary)') {
+    input.style.setProperty('--fill-start', `${start}%`);
+    input.style.setProperty('--fill-end', `${end}%`);
+    input.style.setProperty('--fill-color', color);
+}
+
+/** Relleno clásico desde el mínimo hasta el valor actual, actualizado en cada cambio. */
+export function bindRangeFill(input) {
+    const paint = () => setRangeFill(input, 0, rangePercent(input));
+    input.addEventListener('input', paint);
+    paint();
+    return paint;
+}

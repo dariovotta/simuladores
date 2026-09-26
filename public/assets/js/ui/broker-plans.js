@@ -6,9 +6,8 @@ import { siteUrl } from '../core/layout.js';
 import { escapeHTML } from '../core/dom.js';
 
 function tierHTML(tier) {
-    const style = tier.background ? ` style="--tier-bg:${tier.background}"` : '';
     const suffix = tier.priceSuffix ? ` <small>${escapeHTML(tier.priceSuffix)}</small>` : '';
-    return `<div class="plan-tier"${style}>
+    return `<div class="plan-tier">
         <div class="plan-tier__name">${escapeHTML(tier.name)}</div>
         <div class="plan-tier__price">${escapeHTML(tier.price)}${suffix}</div>
         <div class="plan-tier__desc">${escapeHTML(tier.desc)}</div>
@@ -21,9 +20,9 @@ function tierHTML(tier) {
  */
 export function renderBrokerPlans(container, context) {
     container.innerHTML = BROKER_PLANS.map((plan) => `
-        <article class="plan-card" style="--plan-bg:${plan.background}">
+        <article class="plan-card">
             <div class="plan-card__head">
-                <img class="plan-card__logo" src="${siteUrl(plan.logo)}" alt="" width="44" height="44" loading="lazy">
+                <img class="plan-card__logo" src="${siteUrl(plan.logo)}" alt="" width="40" height="40" loading="lazy">
                 <h3 class="plan-card__name">${escapeHTML(plan.name)}</h3>
                 <span class="plan-card__badge">${escapeHTML(plan.badge)}</span>
             </div>

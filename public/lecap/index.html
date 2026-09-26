@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>¿Cuándo vender una LECAP? | MisFinanzas</title>
     <meta name="description" content="Simulá si te conviene vender una LECAP antes del vencimiento o esperar, según cómo cambie la tasa de mercado.">
+    <script src="../assets/js/theme-init.js"></script>
     <link rel="icon" href="../assets/img/brand/logo.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/tokens.css">
     <link rel="stylesheet" href="../assets/css/base.css">
     <link rel="stylesheet" href="../assets/css/components.css">
@@ -16,25 +17,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
     <script type="module" src="../assets/js/pages/lecap.js"></script>
 </head>
-<body data-page="lecap" data-accent="green">
+<body data-page="lecap">
 
 <div data-slot="header"></div>
 
-<section class="hero">
-    <h1 class="hero__title">LECAP: ¿cuándo <span>conviene vender</span> antes?</h1>
-    <p class="hero__lead">Simulá cómo el precio de mercado se separa del valor técnico cuando cambian las tasas, y encontrá el momento óptimo de salida.</p>
-</section>
-
 <main class="main">
 
-    <div class="callout callout--accent animate-in">
+    <header class="page-head">
+        <h1 class="page-title">LECAP: ¿cuándo <span>conviene vender</span> antes?</h1>
+        <p class="page-lead">Simulá cómo el precio de mercado se separa del valor técnico cuando cambian las tasas, y encontrá el momento óptimo de salida.</p>
+    </header>
+
+    <div class="callout">
         <p>Cuando comprás una LECAP, el Estado te promete un valor fijo al vencimiento. Pero como cotiza en bolsa, <strong>el precio cambia todos los días</strong>. Si las tasas de mercado bajan, el precio sube por encima de lo esperado y puede convenir vender antes de tiempo. Si suben, el precio baja y esperar es mejor.</p>
     </div>
 
-    <section class="card animate-in">
+    <section class="card">
         <div class="card__header">
             <div>
-                <h2 class="card__title">🔧 Parámetros</h2>
+                <h2 class="card__title">Parámetros</h2>
                 <p class="card__subtitle">Definí el plazo en días exactos (7 a 180) y el día en que cambia la tasa de mercado.</p>
             </div>
         </div>
@@ -80,17 +81,17 @@
     <div class="metrics">
         <div class="metric">
             <div class="metric__label">Valor al vencimiento</div>
-            <div class="metric__value metric__value--sm" id="maturityValue">—</div>
+            <div class="metric__value" id="maturityValue">—</div>
             <div class="metric__sub">Si mantenés hasta el final</div>
         </div>
         <div class="metric">
             <div class="metric__label">Mejor venta anticipada</div>
-            <div class="metric__value metric__value--sm" id="peakValue">—</div>
+            <div class="metric__value" id="peakValue">—</div>
             <div class="metric__sub" id="peakSub"></div>
         </div>
         <div class="metric">
             <div class="metric__label" id="extraLabel">Extra vs. valor técnico</div>
-            <div class="metric__value metric__value--sm" id="extraValue">—</div>
+            <div class="metric__value" id="extraValue">—</div>
             <div class="metric__sub" id="extraSub"></div>
         </div>
     </div>
@@ -103,14 +104,14 @@
     <section class="card">
         <div class="card__header">
             <div>
-                <h2 class="card__title">📈 Evolución del precio</h2>
+                <h2 class="card__title">Evolución del precio</h2>
                 <p class="card__subtitle">Precio de mercado vs. valor técnico (lo que vale si mantenés hasta el vencimiento)</p>
             </div>
         </div>
         <div class="chart-legend">
-            <span class="chart-legend__item"><span class="chart-legend__swatch lecap-swatch--market"></span>Precio de mercado</span>
-            <span class="chart-legend__item"><span class="chart-legend__swatch lecap-swatch--technical"></span>Valor técnico (si mantenés)</span>
-            <span class="chart-legend__item"><span class="chart-legend__swatch chart-legend__swatch--dot lecap-swatch--peak"></span>Punto óptimo de venta</span>
+            <span class="chart-legend__item"><span class="chart-legend__line"></span>Precio de mercado</span>
+            <span class="chart-legend__item"><span class="chart-legend__line chart-legend__line--dashed"></span>Valor técnico (si mantenés)</span>
+            <span class="chart-legend__item"><span class="chart-legend__dot"></span>Punto óptimo de venta</span>
         </div>
         <div class="chart-box chart-box--md">
             <canvas id="lecapChart" role="img" aria-label="Evolución del precio de la LECAP"></canvas>
@@ -120,19 +121,19 @@
     <section class="card">
         <div class="card__header">
             <div>
-                <h2 class="card__title">📋 Detalle por momento</h2>
+                <h2 class="card__title">Detalle por momento</h2>
                 <p class="card__subtitle">Cuánto obtenés si vendés en cada punto vs. mantener</p>
             </div>
         </div>
         <div class="table-wrap">
-            <table class="table table--compact">
+            <table class="table table--compact table--numeric">
                 <thead><tr>
                     <th>Momento</th>
                     <th>Retorno del período</th>
                     <th>Precio mercado</th>
                     <th>Valor técnico</th>
                     <th>Ganancia si vendés</th>
-                    <th>vs. esperar</th>
+                    <th class="t-left">vs. esperar</th>
                 </tr></thead>
                 <tbody id="lecapTable"></tbody>
             </table>
@@ -140,13 +141,12 @@
     </section>
 
     <div class="disclaimer">
-        <h4 class="disclaimer__title">⚠️ Aviso</h4>
+        <h4 class="disclaimer__title">Aviso</h4>
         <p>Simulador educativo. Asume una LECAP comprada a una tasa efectiva mensual (mes de 30 días) y un único cambio de la tasa de mercado en el día indicado. No contempla comisiones, impuestos ni costos de reinversión. No constituye asesoramiento financiero.</p>
     </div>
 
 </main>
 
-<div data-slot="footer"></div>
 
 </body>
 </html>
