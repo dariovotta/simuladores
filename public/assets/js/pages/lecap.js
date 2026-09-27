@@ -9,6 +9,7 @@ import { icon } from '../core/icons.js';
 import { bindRangeFill } from '../core/inputs.js';
 import { onThemeChange } from '../core/theme.js';
 import { simulateLecap } from '../calc/lecap.js';
+import { mountSaveSimulation } from '../ui/save-sim.js';
 
 const els = {};
 let chart;
@@ -36,6 +37,21 @@ function init() {
     $('#lecapForm').addEventListener('input', update);
     update();
     onThemeChange(update);
+
+    mountSaveSimulation({
+        simulator: 'lecap',
+        getParams: () => readInputs(),
+        applyParams: (p) => {
+            els.buyRate.value = String(p.buyRate);
+            els.marketRate.value = String(p.marketRate);
+            els.totalDays.value = String(p.totalDays);
+            els.changeDay.max = String(Math.max(1, p.totalDays - 1));
+            els.changeDay.value = String(p.changeDay);
+            els.capital.value = String(p.capital);
+            update();
+        },
+        canSave: () => true,
+    });
 }
 
 function readInputs() {

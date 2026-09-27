@@ -579,3 +579,48 @@
     .btn-row .btn--primary { flex: 1 1 100%; }
     .btn-row .btn--ghost { max-width: none; }
 }
+
+/* ---------- Botón chico (acciones junto al título) ---------- */
+.btn--sm { height: 40px; padding: 0 14px; border-radius: 12px; font-size: 13px; }
+.btn .icon { width: 16px; height: 16px; }
+
+/* ---------- Acciones del título (Guardar simulación) ---------- */
+.page-head__actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
+.page-head__loaded {
+    max-width: 260px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    background: var(--primarySoft);
+    color: var(--primaryInk);
+    font-size: 12px;
+    font-weight: 700;
+}
+@media (min-width: 1024px) {
+    .page-head--actions { display: grid; grid-template-columns: 1fr auto; column-gap: 16px; row-gap: 6px; align-items: center; }
+    .page-head--actions.page-head--back { grid-template-columns: auto 1fr auto; }
+    .page-head--actions > .page-head__actions { grid-column: -2; grid-row: 1 / span 2; margin-top: 0; justify-self: end; }
+    .page-head--actions:not(.page-head--back) > :not(.page-head__actions) { grid-column: 1; }
+}
+
+/* ---------- Diálogo ---------- */
+.dialog {
+    margin: auto;
+    width: min(420px, calc(100% - 32px));
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    background: var(--card);
+    color: var(--text);
+    box-shadow: var(--shadow-pop);
+}
+.dialog::backdrop { background: rgba(5, 10, 18, .45); }
+.dialog__body { display: flex; flex-direction: column; gap: 14px; padding: 24px; }
+.dialog__title { font-size: 20px; font-weight: 700; letter-spacing: -.02em; }
+.dialog__text { font-size: 14px; line-height: 1.55; color: var(--muted); }
+.dialog__error { font-size: 13px; font-weight: 600; color: var(--neg); }
+.dialog__error:empty { display: none; }
+.dialog__actions { display: flex; gap: 10px; justify-content: flex-end; }
+.dialog__actions .btn { flex: 1; }

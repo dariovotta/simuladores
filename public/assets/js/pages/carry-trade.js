@@ -9,12 +9,14 @@ import { axisStyle, chartTheme, createChartSlot, mainLine, referenceLine, toolti
 import { icon } from '../core/icons.js';
 import { onThemeChange } from '../core/theme.js';
 import { DOLLAR_TYPES, RATE_TYPES, breakevenSeries, computeCarry, sensitivityTable } from '../calc/carry.js';
+import { mountSaveSimulation } from '../ui/save-sim.js';
 
 const MAX_HISTORY = 3;
 const els = {};
 const history = [];
 let chart;
 let lastChart = null; // último gráfico dibujado, para redibujarlo al cambiar el tema
+let lastInput = null; // últimos valores calculados (los que se guardan)
 
 const OUTCOME_TONE = { gain: 'good', loss: 'bad', neutral: 'mid' };
 
@@ -47,6 +49,7 @@ function init() {
             toggle(els.results, false);
             chart.destroy();
             lastChart = null;
+            lastInput = null;
         });
     });
     els.shareBtn.addEventListener('click', share);
@@ -56,6 +59,16 @@ function init() {
     });
     updateRateLabel();
     onThemeChange(() => { if (lastChart) renderChart(...lastChart); });
+
+    mountSaveSimulation({
+        simulator: 'carry-trade',
+        getParams: () => lastInput,
+        applyParams: (p) => {
+            fillForm(p);
+            calculate({ record: false });
+        },
+        canSave: () => Boolean(lastInput) && !els.results.classList.contains('hidden'),
+    });
 }
 
 function updateRateLabel() {
@@ -87,6 +100,7 @@ function readForm() {
 function calculate({ scroll = false, record = true } = {}) {
     const input = readForm();
     if (!input) return;
+    lastInput = input;
 
     const result = computeCarry(input);
     const tone = OUTCOME_TONE[result.outcome];
@@ -230,8 +244,7 @@ function renderHistory() {
     }).join('');
 }
 
-function loadFromHistory(index) {
-    const { input } = history[index];
+function fillForm(input) {
     els.dollarType.value = input.dollarType;
     els.rateType.value = input.rateType;
     updateRateLabel();
@@ -240,6 +253,10 @@ function loadFromHistory(index) {
     writeNumber(els.capital, input.capital);
     writeNumber(els.rate, input.ratePct, { decimals: 4 });
     writeNumber(els.days, input.days);
+}
+
+function loadFromHistory(index) {
+    fillForm(history[index].input);
     calculate({ scroll: true, record: false });
 }
 

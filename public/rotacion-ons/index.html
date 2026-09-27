@@ -6,6 +6,8 @@
     <title>Simulador de Rotación de ONs | MisFinanzas</title>
     <meta name="description" content="Calculá si conviene vender una Obligación Negociable para comprar otra con mejor TIR y cuántos meses tardás en recuperar las comisiones.">
     <script src="../assets/js/theme-init.js"></script>
+    <style>html{background:#F4F6F9}html[data-theme="dark"]{background:#07110D}</style>
+    <script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/api/*"}}]},"eagerness":"moderate"}]}</script>
     <link rel="icon" href="../assets/img/brand/logo.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +18,7 @@
     <link rel="stylesheet" href="../assets/css/transitions.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js" defer></script>
-    <script type="module" src="../assets/js/pages/rotacion-ons.js"></script>
+    <script type="module" src="../assets/js/pages/rotacion-ons.js" blocking="render"></script>
 </head>
 <body data-page="rotacion-ons">
 

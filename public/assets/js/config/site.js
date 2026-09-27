@@ -50,4 +50,15 @@ export const SIMULATORS = [
         shortName: 'Carry Trade',
         description: 'Calculá el rendimiento de un carry trade en Argentina. Simulá distintos escenarios de tipo de cambio y tasa para ver si conviene la estrategia.',
     },
+    {
+        id: 'cuotas',
+        path: 'cuotas/',
+        icon: 'assets/img/icons/cuotas.svg',
+        name: 'Calculadora de Cuotas',
+        shortName: 'Cuotas',
+        description: 'Compará pagar de contado o en cuotas: proyección mes a mes mientras el dinero rinde a la tasa. Podés comparar dos planes de cuotas.',
+    },
 ];
+
+/** Busca un simulador por id. */
+export const simulatorById = (id) => SIMULATORS.find((s) => s.id === id);
