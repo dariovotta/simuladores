@@ -63,8 +63,9 @@ public/                     Todo lo que se publica
   assets/
     css/
       tokens.css              Colores (claro y oscuro), tipografía, radios, sombras  ← punto de entrada de la estética
-      base.css                Reset, layout, header (web y móvil), título de página
+      base.css                Reset, pantalla, topbar web, header móvil, título de página
       components.css          Cards, formularios, tablas, métricas, avisos, sliders, planes de brokers…
+      transitions.css         Animaciones de entrada entre pantallas (iguales a portfolio)
       pages/*.css             Ajustes propios de cada página
     js/
       theme-init.js           Aplica el tema guardado antes de pintar (evita el parpadeo)
@@ -87,7 +88,7 @@ tests/                      Tests unitarios de calc/ y core/format.js
   MisInversiones con primario verde). Los componentes solo usan esas variables. El tema oscuro
   redefine los mismos tokens en `:root[data-theme="dark"]`; el botón del header lo alterna y lo
   guarda en `localStorage`. Los gráficos leen los colores de los tokens y se redibujan al cambiar
-  de tema.
+  de tema. El layout (topbar web, header móvil y transiciones) replica al de `dariovotta/portfolio`.
 - **Actualizar comisiones:** editar `public/assets/js/data/brokers.js` (y `DATA_UPDATED`). La misma
   data alimenta el Comparador y la Rotación de ONs.
 - **Cambiar nombre o logo:** `public/assets/js/config/site.js` (`BRAND`) y `public/assets/img/brand/logo.svg`.

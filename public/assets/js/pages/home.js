@@ -14,5 +14,5 @@ document.getElementById('simGrid').innerHTML = SIMULATORS.map((sim) => `
             <span class="sim-card__icon" style="--icon: url('${siteUrl(sim.icon)}')"></span>
         </span>
         <span class="sim-card__name">${escapeHTML(sim.name)}</span>
-        <span class="sim-card__chevron">${icon('chevronRight', 18)}</span>
+        <span class="sim-card__go"><span class="sim-card__ver">Ver</span>${icon('chevronRight', 20)}</span>
     </a>`).join('');

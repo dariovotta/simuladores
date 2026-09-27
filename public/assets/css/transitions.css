@@ -1,0 +1,27 @@
+/* Transiciones entre pantallas (idénticas a dariovotta/portfolio, public/css/base.css).
+   Agregar la clase enter-fwd / enter-back / enter-side al contenedor .screen al navegar.
+   Web: siempre enter-side. Móvil: enter-fwd al avanzar (home → simulador), enter-back al volver. */
+@keyframes enterFwd { from { opacity: 0; transform: translateX(28px); } to { opacity: 1; transform: none; } }
+@keyframes enterBack { from { opacity: 0; transform: translateX(-28px); } to { opacity: 1; transform: none; } }
+@keyframes enterSide { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes riseIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+.screen.enter-fwd { animation: enterFwd .32s cubic-bezier(.2, .8, .2, 1) both; }
+.screen.enter-back { animation: enterBack .32s cubic-bezier(.2, .8, .2, 1) both; }
+.screen.enter-side { animation: enterSide .28s cubic-bezier(.2, .8, .2, 1) both; }
+.screen.enter-fwd > *, .screen.enter-back > *, .screen.enter-side > * {
+  animation: riseIn .38s cubic-bezier(.2, .8, .2, 1) both;
+}
+.screen[class*="enter-"] > :nth-child(2) { animation-delay: .03s; }
+.screen[class*="enter-"] > :nth-child(3) { animation-delay: .06s; }
+.screen[class*="enter-"] > :nth-child(4) { animation-delay: .09s; }
+.screen[class*="enter-"] > :nth-child(5) { animation-delay: .12s; }
+.screen[class*="enter-"] > :nth-child(n+6) { animation-delay: .15s; }
+
+@media (min-width: 1024px) {
+  .screen.enter-fwd, .screen.enter-back { animation-name: enterSide; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .screen[class*="enter-"], .screen[class*="enter-"] > * { animation: none !important; }
+}
+html, body { overflow-x: clip; }

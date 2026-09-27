@@ -1,44 +1,39 @@
 /* =========================================================
-   HOME: listado de simuladores
+   HOME: listado de simuladores (tarjetas .cta de portfolio)
    ========================================================= */
-.home-head { margin-bottom: 24px; }
-
 .sim-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 400px), 1fr));
-    gap: 14px;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr));
+    gap: 10px;
 }
 
 .sim-card {
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 20px;
+    gap: 12px;
+    padding: 16px 18px;
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: var(--radius-card);
     color: var(--text);
     text-decoration: none;
 }
-.sim-card:hover,
-.sim-card:focus-visible { border-color: var(--primary); outline: none; }
-
 .sim-card__tile {
-    width: 48px;
-    height: 48px;
-    border-radius: var(--radius-tile);
-    background: var(--primarySoft);
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: var(--primary);
     display: flex;
     align-items: center;
     justify-content: center;
     flex: none;
 }
 .sim-card__icon {
-    width: 22px;
-    height: 22px;
-    background: var(--primary);
-    -webkit-mask: var(--icon) center / 22px no-repeat;
-    mask: var(--icon) center / 22px no-repeat;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    -webkit-mask: var(--icon) center / 100% no-repeat;
+    mask: var(--icon) center / 100% no-repeat;
 }
 .sim-card__name {
     flex: 1;
@@ -46,6 +41,25 @@
     font-size: 16px;
     font-weight: 700;
     line-height: 1.3;
-    letter-spacing: -.01em;
 }
-.sim-card__chevron { color: var(--muted); }
+.sim-card__go {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--primary);
+    font-size: 14px;
+    font-weight: 700;
+    flex: none;
+}
+.sim-card__go .icon { width: 20px; height: 20px; }
+.sim-card__ver { display: none; }
+
+@media (min-width: 1024px) {
+    .sim-grid { gap: 14px; }
+    .sim-card { padding: 22px 24px; gap: 14px; }
+    .sim-card__tile { width: 44px; height: 44px; border-radius: 13px; }
+    .sim-card__icon { width: 22px; height: 22px; }
+    .sim-card__name { font-size: 17px; }
+    .sim-card__ver { display: inline; }
+    .sim-card__go .icon { width: 16px; height: 16px; }
+}

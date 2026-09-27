@@ -30,30 +30,37 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 input[type=number] { -moz-appearance: textfield; }
 
-/* ---------- Layout ---------- */
+/* ---------- Pantalla (igual que .screen de portfolio) ---------- */
 .main {
     flex: 1;
     width: 100%;
-    max-width: var(--page-max);
+    max-width: 640px;
     margin: 0 auto;
-    padding: clamp(24px, 2.6vw, 36px) clamp(20px, 2.8vw, 36px) clamp(40px, 5vw, 64px);
+    padding: 16px 20px 36px;
 }
-.main--narrow { max-width: var(--page-max-narrow); }
+@media (min-width: 768px) {
+    .main { padding-left: 32px; padding-right: 32px; }
+}
+@media (min-width: 1024px) {
+    .main { max-width: var(--page-max); padding: 28px 36px 48px; }
+    .main--home { padding-top: 32px; }
+}
 
-/* ---------- Header ---------- */
+@media (max-width: 1023.98px) { .only-web { display: none !important; } }
+@media (min-width: 1024px) { .only-mobile { display: none !important; } }
+
+/* ---------- Topbar web (copia de .topbar de portfolio) ---------- */
 .topbar {
     position: sticky;
     top: 0;
-    z-index: 100;
-    background: var(--card);
-    border-bottom: 1px solid var(--border);
-}
-.topbar__inner {
-    height: calc(var(--topbar-h) - 1px); /* el alto total incluye el borde inferior */
-    padding: 0 36px;
+    z-index: 10;
+    height: var(--topbar-h);
     display: flex;
     align-items: center;
     gap: 40px;
+    padding: 0 36px;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
 }
 .brand {
     display: flex;
@@ -64,67 +71,85 @@ input[type=number] { -moz-appearance: textfield; }
     flex: none;
     min-width: 0;
 }
-.brand__logo { width: 32px; height: 32px; border-radius: 8px; }
-.brand__name { font-size: 17px; font-weight: 800; letter-spacing: -.02em; line-height: normal; }
+.brand__logo { width: 32px; height: 32px; flex: none; }
+.brand__name { font-size: 17px; font-weight: 800; letter-spacing: -.02em; }
 
-.topnav {
-    display: flex;
-    gap: 28px;
-    height: 100%;
-    margin-right: auto;
-}
-.topnav__link {
+.tabs { display: flex; gap: 28px; height: 100%; }
+.tab {
     display: flex;
     align-items: center;
     height: 100%;
+    border-bottom: 2px solid transparent;
     font-size: 14px;
     font-weight: 600;
     color: var(--muted);
     white-space: nowrap;
 }
-.topnav__link:hover { color: var(--text); }
-.topnav__link[aria-current="page"] {
-    color: var(--text);
-    box-shadow: inset 0 -2px 0 var(--primary);
-}
+.tab[aria-current="page"] { color: var(--text); border-bottom-color: var(--primary); }
+.topbar .spacer { flex: 1; }
 
-.theme-toggle {
+.header-actions { display: flex; gap: 8px; align-items: center; flex: none; }
+
+/* Botón icono circular (.icon-btn de portfolio) */
+.icon-btn {
     width: 40px;
     height: 40px;
-    border-radius: 50%;
+    flex: none;
     border: none;
+    border-radius: 20px;
     background: var(--chip);
     color: var(--text);
     display: flex;
     align-items: center;
     justify-content: center;
-    flex: none;
+    padding: 0;
 }
-[data-theme-slot] { display: contents; }
+.icon-btn .icon { width: 18px; height: 18px; }
 
-.menu-toggle {
-    display: none;
-    height: 36px;
-    padding: 0 10px 0 14px;
-    border-radius: var(--radius-pill);
-    border: none;
-    background: var(--chip);
-    color: var(--text);
-    font-size: 13px;
-    font-weight: 700;
+/* ---------- Header móvil (dentro de la pantalla) ---------- */
+.app-header {
+    display: flex;
     align-items: center;
-    gap: 6px;
-    white-space: nowrap;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
 }
+.page-header {
+    position: relative;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+.page-header__left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.page-header__title {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+    border: none;
+    background: transparent;
+    padding: 0;
+    text-align: left;
+    color: var(--text);
+}
+.page-header__name { display: flex; align-items: center; gap: 4px; }
+.page-header__name > span { font-size: 20px; font-weight: 700; letter-spacing: -.02em; white-space: nowrap; }
+.page-header__name .icon { color: var(--muted); }
+.page-header__sub { font-size: 12px; color: var(--muted); white-space: nowrap; }
+
 .menu {
     position: absolute;
-    top: 66px;
-    left: 12px;
-    right: 12px;
+    top: 52px;
+    left: 0;
+    right: 0;
+    z-index: 20;
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: var(--radius-list);
-    box-shadow: var(--shadow-menu);
+    box-shadow: var(--shadow-pop);
     padding: 6px;
     display: flex;
     flex-direction: column;
@@ -138,50 +163,32 @@ input[type=number] { -moz-appearance: textfield; }
     align-items: center;
     justify-content: space-between;
     font-size: 15px;
-    font-weight: 700;
+    font-weight: 600;
     color: var(--text);
 }
+.menu__link > span { flex: 1; min-width: 0; white-space: nowrap; }
 .menu__link[aria-current="page"] { color: var(--primary); background: var(--primarySoft); }
-
-@media (max-width: 1023px) {
-    .topbar__inner {
-        height: var(--topbar-h-mobile);
-        padding: 0 16px 0 20px;
-        gap: 10px;
-    }
-    .brand { gap: 8px; margin-right: auto; }
-    .brand__logo { width: 28px; height: 28px; border-radius: 7px; }
-    .brand__name { font-size: 16px; }
-    .topnav { display: none; }
-    .menu-toggle { display: flex; }
-    .theme-toggle { width: 36px; height: 36px; }
-}
-@media (min-width: 1024px) {
-    .menu { display: none !important; }
-}
 
 /* ---------- Título de página ---------- */
 .page-head {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-bottom: 28px;
+    gap: 6px;
+    margin-bottom: 24px;
 }
 .page-title {
     font-size: 20px;
     line-height: 1.2;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: -.02em;
     text-wrap: balance;
 }
-.page-title span { color: var(--primary); }
 .page-lead {
-    font-size: 15px;
-    line-height: 1.5;
+    font-size: 14px;
+    line-height: 1.55;
     color: var(--muted);
     max-width: 680px;
 }
-
 @media (min-width: 1024px) {
     .page-title { font-size: 24px; }
 }
@@ -197,7 +204,3 @@ input[type=number] { -moz-appearance: textfield; }
 }
 .no-scrollbar { scrollbar-width: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
-
-@media (max-width: 640px) {
-    .main { padding-left: 20px; padding-right: 20px; }
-}
