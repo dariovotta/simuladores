@@ -4,12 +4,13 @@
 import { mountLayout, siteUrl } from '../core/layout.js';
 import { $, $$, emptyState, escapeHTML, rankBadge, toggle } from '../core/dom.js';
 import { formatARS, formatNumber, formatPct, formatSignedPct } from '../core/format.js';
-import { bindAmountInput, readNumber } from '../core/inputs.js';
+import { bindAmountInput, readNumber, writeNumber } from '../core/inputs.js';
 import { chartTheme, createChartSlot, horizontalBarConfig } from '../core/charts.js';
 import { onThemeChange } from '../core/theme.js';
 import { DATA_UPDATED } from '../data/brokers.js';
 import { computeRotation, recoveryTone } from '../calc/rotacion.js';
 import { renderBrokerPlans } from '../ui/broker-plans.js';
+import { mountSaveSimulation } from '../ui/save-sim.js';
 
 const els = {};
 let chart;
@@ -37,6 +38,26 @@ function init() {
     bindAmountInput(els.newYield, { allowDecimals: true, onChange: update });
     update();
     onThemeChange(update);
+
+    const read = () => ({
+        amount: readNumber(els.amount),
+        currentYield: readNumber(els.currentYield),
+        newYield: readNumber(els.newYield),
+    });
+    mountSaveSimulation({
+        simulator: 'rotacion-ons',
+        getParams: read,
+        applyParams: (p) => {
+            writeNumber(els.amount, p.amount);
+            writeNumber(els.currentYield, p.currentYield, { decimals: 4 });
+            writeNumber(els.newYield, p.newYield, { decimals: 4 });
+            update();
+        },
+        canSave: () => {
+            const v = read();
+            return v.amount > 0 && Number.isFinite(v.currentYield) && Number.isFinite(v.newYield);
+        },
+    });
 }
 
 function monthsLabel(months) {

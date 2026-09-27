@@ -11,6 +11,8 @@ const PATHS = {
     check: ['<path d="M5 12l5 5 9-10"/>', 3.5],
     x: ['<path d="M6 6l12 12M18 6L6 18"/>', 3.5],
     minus: ['<path d="M6 12h12"/>', 3.5],
+    bookmark: ['<path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>', 2],
+    trash: ['<path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/>', 2],
 };
 
 /** SVG inline de un ícono. */

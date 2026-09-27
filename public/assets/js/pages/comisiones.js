@@ -4,12 +4,13 @@
 import { mountLayout, siteUrl } from '../core/layout.js';
 import { $, $$, emptyState, escapeHTML, rankBadge, setPressed, toggle } from '../core/dom.js';
 import { formatARS, formatNumber } from '../core/format.js';
-import { bindAmountInput, readNumber } from '../core/inputs.js';
+import { bindAmountInput, readNumber, writeNumber } from '../core/inputs.js';
 import { chartTheme, createChartSlot, horizontalBarConfig } from '../core/charts.js';
 import { onThemeChange } from '../core/theme.js';
 import { CATEGORIES, DATA_UPDATED } from '../data/brokers.js';
 import { categoryHasTna, computeCommissions, rateRanking } from '../calc/comisiones.js';
 import { renderBrokerPlans } from '../ui/broker-plans.js';
+import { mountSaveSimulation } from '../ui/save-sim.js';
 
 const state = {
     category: 'acciones',
@@ -48,6 +49,23 @@ function init() {
     renderChart();
     renderResults();
     onThemeChange(renderChart);
+
+    mountSaveSimulation({
+        simulator: 'comisiones',
+        getParams: () => ({
+            category: state.category,
+            double: state.double,
+            amount: readNumber(els.amount),
+            days: parseInt(els.days.value, 10) || 7,
+        }),
+        applyParams: (p) => {
+            writeNumber(els.amount, p.amount);
+            els.days.value = String(p.days ?? 7);
+            if (CATEGORIES[p.category]) selectCategory(p.category);
+            setMode(Boolean(p.double));
+        },
+        canSave: () => readNumber(els.amount) > 0,
+    });
 }
 
 // ---------- Estado ----------

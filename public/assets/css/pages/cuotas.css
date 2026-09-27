@@ -1,0 +1,23 @@
+/* =========================================================
+   CALCULADORA DE CUOTAS
+   ========================================================= */
+.plan-tag { color: var(--primary); }
+.plan-b { padding-top: 16px; border-top: 1px dashed var(--border); }
+#compareBtn[aria-pressed="true"] { background: var(--primarySoft); border-color: transparent; color: var(--primaryInk); }
+
+.projection { display: grid; grid-template-columns: 1fr; gap: 20px; }
+.projection--dual { grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); }
+.projection__head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+.projection__info { font-size: 13px; color: var(--muted); }
+.plan-badge {
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    font-size: 12px;
+    font-weight: 700;
+    background: var(--primarySoft);
+    color: var(--primary);
+}
+.plan-badge--b { background: var(--warnSoft); color: var(--warn); }
+.month-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--primary); margin-right: 8px; vertical-align: middle; }
+tr.is-negative .month-dot { background: var(--neg); }
+tr.is-positive-end .month-dot { background: var(--pos); }

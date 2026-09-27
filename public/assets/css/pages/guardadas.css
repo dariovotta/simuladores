@@ -1,0 +1,58 @@
+/* =========================================================
+   SIMULACIONES GUARDADAS
+   ========================================================= */
+.saved-list {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-list);
+    overflow: hidden;
+}
+.saved-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+}
+.saved-item + .saved-item { border-top: 1px solid var(--border); }
+.saved-item:hover { background: var(--subtle); }
+.saved-item__open {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: var(--text);
+}
+.saved-item__tile {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+}
+.saved-item__icon {
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    -webkit-mask: var(--icon) center / 100% no-repeat;
+    mask: var(--icon) center / 100% no-repeat;
+}
+.saved-item__text { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.saved-item__name { font-size: 15px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.saved-item__meta { font-size: 12px; color: var(--muted); }
+.saved-item__go { color: var(--primary); display: flex; }
+.saved-item__delete { background: transparent; color: var(--muted); }
+.saved-item__delete:hover { background: var(--negSoft); color: var(--neg); }
+
+.saved-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    text-align: center;
+    padding: 36px 20px;
+}
+.saved-empty p { font-size: 14px; color: var(--muted); max-width: 420px; line-height: 1.55; }

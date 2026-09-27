@@ -1,27 +1,49 @@
-/* Transiciones entre pantallas (idénticas a dariovotta/portfolio, public/css/base.css).
-   Agregar la clase enter-fwd / enter-back / enter-side al contenedor .screen al navegar.
-   Web: siempre enter-side. Móvil: enter-fwd al avanzar (home → simulador), enter-back al volver. */
+/* =========================================================
+   Transiciones entre pantallas (iguales a dariovotta/portfolio).
+   La dirección la decide theme-init.js en <head> con
+   html[data-enter="fwd|back|side"], así la animación arranca desde
+   el primer pintado y no hay parpadeo.
+   Web: siempre sube (side). Móvil: fwd al avanzar, back al volver.
+   ========================================================= */
+
+/* Transición nativa entre documentos: el navegador mantiene la página
+   anterior hasta que la nueva está lista (sin pantalla en blanco). */
+@view-transition { navigation: auto; }
+::view-transition-old(root),
+::view-transition-new(root) { animation-duration: .18s; }
+
+/* La barra superior no se funde: queda fija y la pestaña activa se desliza. */
+.topbar { view-transition-name: topbar; }
+::view-transition-old(topbar) { display: none; }
+::view-transition-new(topbar) { animation: none; }
+
 @keyframes enterFwd { from { opacity: 0; transform: translateX(28px); } to { opacity: 1; transform: none; } }
 @keyframes enterBack { from { opacity: 0; transform: translateX(-28px); } to { opacity: 1; transform: none; } }
 @keyframes enterSide { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 @keyframes riseIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 
-.screen.enter-fwd { animation: enterFwd .32s cubic-bezier(.2, .8, .2, 1) both; }
-.screen.enter-back { animation: enterBack .32s cubic-bezier(.2, .8, .2, 1) both; }
-.screen.enter-side { animation: enterSide .28s cubic-bezier(.2, .8, .2, 1) both; }
-.screen.enter-fwd > *, .screen.enter-back > *, .screen.enter-side > * {
-  animation: riseIn .38s cubic-bezier(.2, .8, .2, 1) both;
-}
-.screen[class*="enter-"] > :nth-child(2) { animation-delay: .03s; }
-.screen[class*="enter-"] > :nth-child(3) { animation-delay: .06s; }
-.screen[class*="enter-"] > :nth-child(4) { animation-delay: .09s; }
-.screen[class*="enter-"] > :nth-child(5) { animation-delay: .12s; }
-.screen[class*="enter-"] > :nth-child(n+6) { animation-delay: .15s; }
+html[data-enter="fwd"] .screen { animation: enterFwd .32s var(--ease-enter) both; }
+html[data-enter="back"] .screen { animation: enterBack .32s var(--ease-enter) both; }
+html[data-enter="side"] .screen { animation: enterSide .28s var(--ease-enter) both; }
+html[data-enter] .screen > * { animation: riseIn .38s var(--ease-enter) both; }
+html[data-enter] .screen > :nth-child(2) { animation-delay: .03s; }
+html[data-enter] .screen > :nth-child(3) { animation-delay: .06s; }
+html[data-enter] .screen > :nth-child(4) { animation-delay: .09s; }
+html[data-enter] .screen > :nth-child(5) { animation-delay: .12s; }
+html[data-enter] .screen > :nth-child(n+6) { animation-delay: .15s; }
 
 @media (min-width: 1024px) {
-  .screen.enter-fwd, .screen.enter-back { animation-name: enterSide; }
+    html[data-enter="fwd"] .screen,
+    html[data-enter="back"] .screen { animation-name: enterSide; }
 }
+
+/* Mientras la página se pre-renderiza no hay animación (arranca al mostrarse). */
+html:not([data-enter]) .screen { opacity: 1; }
+
 @media (prefers-reduced-motion: reduce) {
-  .screen[class*="enter-"], .screen[class*="enter-"] > * { animation: none !important; }
+    @view-transition { navigation: none; }
+    html[data-enter] .screen,
+    html[data-enter] .screen > * { animation: none !important; }
+    .tab-indicator { transition: none !important; }
 }
 html, body { overflow-x: clip; }

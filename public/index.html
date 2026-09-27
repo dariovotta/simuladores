@@ -6,6 +6,8 @@
     <title>Simuladores Financieros | MisFinanzas</title>
     <meta name="description" content="Herramientas gratuitas para tomar mejores decisiones de inversión: comisiones de brokers, rotación de ONs, duration de bonos, LECAPs y carry trade.">
     <script src="assets/js/theme-init.js"></script>
+    <style>html{background:#F4F6F9}html[data-theme="dark"]{background:#07110D}</style>
+    <script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/api/*"}}]},"eagerness":"moderate"}]}</script>
     <link rel="icon" href="assets/img/brand/logo.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,15 +17,19 @@
     <link rel="stylesheet" href="assets/css/components.css">
     <link rel="stylesheet" href="assets/css/transitions.css">
     <link rel="stylesheet" href="assets/css/pages/home.css">
-    <script type="module" src="assets/js/pages/home.js"></script>
+    <script type="module" src="assets/js/pages/home.js" blocking="render"></script>
 </head>
 <body data-page="home">
 
 <div data-slot="header"></div>
 
 <main class="main main--home screen">
-    <header class="page-head">
+    <header class="page-head page-head--home">
         <h1 class="page-title">Simuladores Financieros</h1>
+        <a class="btn btn--ghost btn--sm" href="guardadas/">
+            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            Simulaciones guardadas
+        </a>
     </header>
 
     <!-- Las tarjetas se generan desde assets/js/config/site.js -->

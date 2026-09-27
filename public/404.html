@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página no encontrada | MisFinanzas</title>
     <script src="/assets/js/theme-init.js"></script>
+    <style>html{background:#F4F6F9}html[data-theme="dark"]{background:#07110D}</style>
+    <script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/api/*"}}]},"eagerness":"moderate"}]}</script>
     <link rel="icon" href="/assets/img/brand/logo.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,7 +16,7 @@
     <link rel="stylesheet" href="/assets/css/components.css">
     <link rel="stylesheet" href="/assets/css/transitions.css">
     <link rel="stylesheet" href="/assets/css/pages/notfound.css">
-    <script type="module" src="/assets/js/pages/notfound.js"></script>
+    <script type="module" src="/assets/js/pages/notfound.js" blocking="render"></script>
 </head>
 <body data-page="404">
 

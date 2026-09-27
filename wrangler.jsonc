@@ -1,11 +1,26 @@
-// Configuración de Cloudflare Workers (static assets).
-// El sitio es 100% estático: se publica el contenido de ./public tal cual, sin build.
+// Configuración de Cloudflare Workers.
+// - Estáticos: se publica ./public tal cual, sin build.
+// - API /api/*: la atiende el Worker (src/index.js) con login y simulaciones guardadas en D1.
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "simuladores",
+  "main": "src/index.js",
   "compatibility_date": "2026-09-25",
   "assets": {
     "directory": "./public/",
-    "not_found_handling": "404-page"
-  }
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/api/*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "simuladores-db",
+      "database_id": "67d54aaa-93a8-46d5-ac32-ec42482395ce",
+      "migrations_dir": "migrations"
+    }
+  ],
+  // Limpieza diaria de sesiones vencidas (06:00 UTC).
+  "triggers": { "crons": ["0 6 * * *"] },
+  "observability": { "enabled": true }
 }

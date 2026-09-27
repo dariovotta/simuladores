@@ -2,11 +2,14 @@
   "name": "misfinanzas-simuladores",
   "version": "1.0.0",
   "private": true,
-  "description": "Simuladores financieros: comisiones de brokers, rotación de ONs, duration de bonos, LECAPs y carry trade.",
+  "description": "MisFinanzas: simuladores financieros (comisiones, rotación de ONs, duration, LECAPs, carry trade y cuotas) con cuentas y simulaciones guardadas.",
   "type": "module",
   "scripts": {
     "start": "npx --yes serve -l 5173 public",
+    "dev": "npx --yes wrangler dev",
     "test": "node --test tests/*.test.js",
-    "deploy": "npx --yes wrangler deploy"
+    "deploy": "npx --yes wrangler deploy",
+    "db:migrate:local": "npx --yes wrangler d1 migrations apply simuladores-db --local",
+    "db:migrate:remote": "npx --yes wrangler d1 migrations apply simuladores-db --remote"
   }
 }

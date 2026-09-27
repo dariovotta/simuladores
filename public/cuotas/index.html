@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Cuotas | MisFinanzas</title>
+    <meta name="description" content="¿Contado o cuotas? Proyección mes a mes mientras el dinero rinde a la tasa, y comparación entre dos planes de cuotas.">
+    <script src="../assets/js/theme-init.js"></script>
+    <style>html{background:#F4F6F9}html[data-theme="dark"]{background:#07110D}</style>
+    <script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/api/*"}}]},"eagerness":"moderate"}]}</script>
+    <link rel="icon" href="../assets/img/brand/logo.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/tokens.css">
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="../assets/css/transitions.css">
+    <link rel="stylesheet" href="../assets/css/pages/cuotas.css">
+    <script type="module" src="../assets/js/pages/cuotas.js" blocking="render"></script>
+</head>
+<body data-page="cuotas">
+
+<div data-slot="header"></div>
+
+<main class="main screen">
+
+    <header class="page-head">
+        <h1 class="page-title">¿Contado o cuotas?</h1>
+        <p class="page-lead">Proyección mes a mes: cada cuota se descuenta mientras el dinero rinde a la tasa. Cuando el saldo se vuelve negativo, conviene pagar de contado.</p>
+    </header>
+
+    <section class="card">
+        <div class="card__header">
+            <div>
+                <h2 class="card__title">Datos de la compra</h2>
+                <p class="card__subtitle">Ingresá el precio de contado, la tasa que rinde tu dinero y el plan de cuotas</p>
+            </div>
+            <div class="segmented" role="group" aria-label="Pago de contado">
+                <button type="button" class="segmented__btn" data-payment="debito" aria-pressed="false">Débito</button>
+                <button type="button" class="segmented__btn" data-payment="credito" aria-pressed="true">Crédito</button>
+            </div>
+        </div>
+
+        <form class="form-grid" id="cuotasForm" onsubmit="return false">
+            <div class="field">
+                <label class="field__label" for="cash">Monto de contado</label>
+                <div class="input-affix input-affix--prefix">
+                    <span class="input-affix__text">$</span>
+                    <input class="input" type="text" id="cash" placeholder="Ej: 100.000">
+                </div>
+            </div>
+            <div class="field">
+                <label class="field__label" for="tna">TNA (rendimiento de tu dinero)</label>
+                <div class="input-affix input-affix--suffix">
+                    <input class="input" type="text" id="tna" placeholder="Ej: 35">
+                    <span class="input-affix__text">%</span>
+                </div>
+            </div>
+            <div class="field">
+                <label class="field__label" for="totalA">Monto en cuotas <span class="plan-tag hidden" data-plan-tag>(Plan A)</span></label>
+                <div class="input-affix input-affix--prefix">
+                    <span class="input-affix__text">$</span>
+                    <input class="input" type="text" id="totalA" placeholder="Ej: 120.000">
+                </div>
+            </div>
+            <div class="field">
+                <label class="field__label" for="countA">Cantidad de cuotas <span class="plan-tag hidden" data-plan-tag>(Plan A)</span></label>
+                <input class="input" type="text" id="countA" placeholder="Ej: 6">
+            </div>
+            <div class="field" id="daysField">
+                <label class="field__label" for="days">Días al primer vencimiento</label>
+                <div class="input-affix input-affix--suffix input-affix--wide">
+                    <input class="input" type="text" id="days" placeholder="Ej: 30">
+                    <span class="input-affix__text">días</span>
+                </div>
+            </div>
+        </form>
+
+        <div class="form-grid plan-b hidden" id="planBFields">
+            <div class="field">
+                <label class="field__label" for="totalB">Monto en cuotas (Plan B)</label>
+                <div class="input-affix input-affix--prefix">
+                    <span class="input-affix__text">$</span>
+                    <input class="input" type="text" id="totalB" placeholder="Ej: 130.000">
+                </div>
+            </div>
+            <div class="field">
+                <label class="field__label" for="countB">Cantidad de cuotas (Plan B)</label>
+                <input class="input" type="text" id="countB" placeholder="Ej: 12">
+            </div>
+        </div>
+
+        <button type="button" class="btn btn--ghost btn--sm" id="compareBtn" aria-pressed="false">+ Comparar con otro plan</button>
+    </section>
+
+    <div class="metrics">
+        <div class="metric">
+            <div class="metric__label">Precio de la cuota</div>
+            <div class="metric__value tone-info" id="installment">—</div>
+            <div class="metric__sub" id="installmentSub"></div>
+        </div>
+        <div class="metric">
+            <div class="metric__label">Recargo sobre el contado</div>
+            <div class="metric__value" id="surcharge">—</div>
+            <div class="metric__sub">Cuánto más pagás en cuotas</div>
+        </div>
+    </div>
+
+    <div class="verdict" id="verdict" role="status">
+        <span class="verdict__icon" id="verdictIcon" aria-hidden="true"></span>
+        <div id="verdictText"></div>
+    </div>
+
+    <section class="card">
+        <div class="card__header">
+            <div>
+                <h2 class="card__title">Proyección mensual</h2>
+                <p class="card__subtitle" id="projectionSub">Saldo que te queda cada mes después de pagar la cuota</p>
+            </div>
+        </div>
+        <div class="projection" id="projection"></div>
+    </section>
+
+    <div class="disclaimer">
+        <h4 class="disclaimer__title">Aviso</h4>
+        <p>Cálculo orientativo. La TNA se aplica en forma proporcional (30 días por mes) sobre el saldo que queda después de cada cuota; con débito, el contado rinde hasta el primer vencimiento. Las cuotas no devengan interés sobre saldo negativo. No constituye asesoramiento financiero.</p>
+    </div>
+
+</main>
+
+</body>
+</html>

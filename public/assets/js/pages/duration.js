@@ -8,6 +8,7 @@ import { axisStyle, chartTheme, createChartSlot, highlightPoint, mainLine, toolt
 import { rangePercent, setRangeFill } from '../core/inputs.js';
 import { onThemeChange } from '../core/theme.js';
 import { analyzeBond, priceShock, priceYieldCurve } from '../calc/bonos.js';
+import { mountSaveSimulation } from '../ui/save-sim.js';
 
 const els = {};
 let chart;
@@ -43,6 +44,22 @@ function init() {
     els.shock.addEventListener('input', () => renderShock(readParams()));
     update();
     onThemeChange(update);
+
+    mountSaveSimulation({
+        simulator: 'duration',
+        getParams: () => ({ ...readParams(), shock: parseInt(els.shock.value, 10) || 0 }),
+        applyParams: (p) => {
+            els.nominal.value = String(p.nominal);
+            els.coupon.value = String(p.coupon);
+            els.years.value = String(p.years);
+            els.yield.value = String(p.yieldPct);
+            els.frequency.value = String(p.frequency);
+            els.amortization.value = String(p.amortization);
+            els.shock.value = String(p.shock ?? 0);
+            update();
+        },
+        canSave: () => true,
+    });
 }
 
 function update() {
