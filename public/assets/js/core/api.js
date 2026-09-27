@@ -22,6 +22,8 @@ async function request(method, path, body) {
         throw new ApiError(0, 'No hay conexión. Probá de nuevo.');
     }
     const data = await res.json().catch(() => ({}));
+    // Sesión vencida: el layout vuelve a pedir el ingreso.
+    if (res.status === 401 && !path.startsWith('/api/auth/')) window.dispatchEvent(new Event('mf:unauthorized'));
     if (!res.ok) throw new ApiError(res.status, data.error || 'Error inesperado');
     return data;
 }

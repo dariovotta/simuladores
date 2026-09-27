@@ -1,7 +1,8 @@
 # MisFinanzas: Simuladores Financieros
 
-Sitio con 6 simuladores financieros para inversores argentinos, con cuentas de usuario
-para guardar simulaciones:
+Sitio con 6 simuladores financieros para inversores argentinos. Para usarlo hace falta una
+cuenta: sin sesión aparece un popup para ingresar o crear la cuenta. Con la cuenta se pueden
+guardar simulaciones:
 
 | Simulador | Ruta |
 |---|---|
@@ -12,7 +13,7 @@ para guardar simulaciones:
 | Simulador de Carry Trade | `/carry-trade/` |
 | Calculadora de Cuotas (¿contado o cuotas?) | `/cuotas/` |
 
-Otras páginas: `/login/` (ingresar o crear cuenta) y `/guardadas/` (simulaciones guardadas).
+Otra página: `/guardadas/` (simulaciones guardadas).
 
 El frontend es HTML + CSS + JavaScript puro (módulos ES), sin paso de build. Los gráficos usan
 [Chart.js](https://www.chartjs.org/) desde CDN.
@@ -39,7 +40,7 @@ con doble click (`file://`), así que hace falta un servidor local:
 npm run db:migrate:local   # una sola vez: crea la base D1 local
 npm run dev                # Worker + sitio en http://localhost:8787 (con login y guardado)
 
-npm start                  # solo el sitio estático en http://localhost:5173 (sin login)
+npm start                  # solo el sitio estático en http://localhost:5173 (sin API: no se puede ingresar)
 ```
 
 ## Deploy en Cloudflare
@@ -80,7 +81,7 @@ public/                     Todo lo que se publica
   index.html                Home con el listado de simuladores
   404.html                  Página de error
   <simulador>/index.html    Una carpeta por simulador (solo markup)
-  login/  guardadas/        Cuenta y listado de simulaciones guardadas
+  guardadas/                Listado de simulaciones guardadas
   assets/
     css/
       tokens.css              Colores (claro y oscuro), tipografía, radios, sombras  ← punto de entrada de la estética
@@ -94,7 +95,7 @@ public/                     Todo lo que se publica
       core/                   Utilidades: formato es-AR, inputs, DOM, layout, tema, íconos, gráficos, API y sesión
       data/brokers.js         Comisiones de brokers, derechos de mercado, IVA y planes
       calc/                   Lógica financiera pura (sin DOM), una por simulador
-      ui/                     Componentes de UI compartidos (incluye save-sim.js: botón Guardar simulación)
+      ui/                     Componentes de UI compartidos (popup de ingreso y botón Guardar simulación)
       pages/                  Controlador de cada página: lee inputs → calc → render
     img/
       brand/                  Logo (también se usa como favicon)

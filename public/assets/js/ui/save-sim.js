@@ -7,10 +7,10 @@
 // - Si la URL trae ?sim=<id>, carga esa simulación guardada.
 // =========================================================
 import { api } from '../core/api.js';
-import { getUser, loginUrl } from '../core/session.js';
+import { getUser, whenUser } from '../core/session.js';
+import { openAuthGate } from './auth-gate.js';
 import { $, showToast } from '../core/dom.js';
 import { icon } from '../core/icons.js';
-import { ROOT_URL } from '../core/layout.js';
 
 function dialogHTML() {
     return `<dialog class="dialog" id="saveDialog" aria-labelledby="saveDialogTitle">
@@ -67,9 +67,8 @@ export function mountSaveSimulation({ simulator, getParams, applyParams, canSave
     refresh();
 
     btn.addEventListener('click', async () => {
-        const user = await getUser();
-        if (!user) {
-            location.href = loginUrl(ROOT_URL.href);
+        if (!(await getUser())) {
+            openAuthGate();
             return;
         }
         error.textContent = '';
@@ -96,6 +95,10 @@ export function mountSaveSimulation({ simulator, getParams, applyParams, canSave
             showLoaded(name);
             showToast('Simulación guardada');
         } catch (err) {
+            if (err.status === 401) {
+                dialog.close();
+                return;
+            }
             error.textContent = err.message;
             nameInput.focus();
         } finally {
@@ -115,11 +118,7 @@ export function mountSaveSimulation({ simulator, getParams, applyParams, canSave
     const id = new URLSearchParams(location.search).get('sim');
     if (id) {
         (async () => {
-            const user = await getUser();
-            if (!user) {
-                location.href = loginUrl(ROOT_URL.href);
-                return;
-            }
+            await whenUser();
             try {
                 const sim = await api.getSimulation(id);
                 if (sim.simulator !== simulator) throw new Error('Esa simulación es de otro simulador');

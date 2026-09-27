@@ -5,7 +5,7 @@ import { mountLayout, siteUrl } from '../core/layout.js';
 import { $, escapeHTML, showToast } from '../core/dom.js';
 import { icon } from '../core/icons.js';
 import { api } from '../core/api.js';
-import { getUser, loginUrl } from '../core/session.js';
+import { whenUser } from '../core/session.js';
 import { SIMULATORS, simulatorById } from '../config/site.js';
 
 const list = () => $('#savedList');
@@ -45,13 +45,9 @@ function render(items) {
 
 async function init() {
     mountLayout();
-    const user = await getUser();
-    if (!user) {
-        renderEmpty('Ingresá a tu cuenta para ver tus simulaciones guardadas.',
-            `<a class="btn btn--primary" href="${loginUrl(siteUrl())}">Ingresar</a>`);
-        return;
-    }
     list().innerHTML = '<p class="empty-state">Cargando…</p>';
+    // Sin sesión, la lista se carga después de ingresar en el popup.
+    await whenUser();
     let items = [];
     try {
         ({ simulations: items } = await api.listSimulations());
