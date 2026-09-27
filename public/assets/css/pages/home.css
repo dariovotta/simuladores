@@ -2,7 +2,6 @@
    HOME: listado de simuladores
    ========================================================= */
 .home-head { margin-bottom: 24px; }
-.home-head__title { font-size: clamp(28px, 3vw, 40px); line-height: 1.12; }
 
 .sim-grid {
     display: grid;

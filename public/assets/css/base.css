@@ -49,27 +49,27 @@ input[type=number] { -moz-appearance: textfield; }
     border-bottom: 1px solid var(--border);
 }
 .topbar__inner {
-    height: var(--topbar-h);
-    padding: 0 40px 1px;
+    height: calc(var(--topbar-h) - 1px); /* el alto total incluye el borde inferior */
+    padding: 0 36px;
     display: flex;
     align-items: center;
-    gap: 44px;
+    gap: 40px;
 }
 .brand {
     display: flex;
     align-items: center;
-    gap: 11px;
+    gap: 10px;
     color: var(--text);
     text-decoration: none;
     flex: none;
     min-width: 0;
 }
 .brand__logo { width: 32px; height: 32px; border-radius: 8px; }
-.brand__name { font-size: 18px; font-weight: 800; letter-spacing: -.02em; line-height: 1; }
+.brand__name { font-size: 17px; font-weight: 800; letter-spacing: -.02em; line-height: normal; }
 
 .topnav {
     display: flex;
-    gap: 30px;
+    gap: 28px;
     height: 100%;
     margin-right: auto;
 }
@@ -78,7 +78,7 @@ input[type=number] { -moz-appearance: textfield; }
     align-items: center;
     height: 100%;
     font-size: 14px;
-    font-weight: 700;
+    font-weight: 600;
     color: var(--muted);
     white-space: nowrap;
 }
@@ -89,11 +89,11 @@ input[type=number] { -moz-appearance: textfield; }
 }
 
 .theme-toggle {
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    border: 1px solid var(--border);
-    background: var(--card);
+    border: none;
+    background: var(--chip);
     color: var(--text);
     display: flex;
     align-items: center;
@@ -154,6 +154,7 @@ input[type=number] { -moz-appearance: textfield; }
     .brand__name { font-size: 16px; }
     .topnav { display: none; }
     .menu-toggle { display: flex; }
+    .theme-toggle { width: 36px; height: 36px; }
 }
 @media (min-width: 1024px) {
     .menu { display: none !important; }
@@ -167,8 +168,8 @@ input[type=number] { -moz-appearance: textfield; }
     margin-bottom: 28px;
 }
 .page-title {
-    font-size: clamp(26px, 2.8vw, 36px);
-    line-height: 1.15;
+    font-size: 20px;
+    line-height: 1.2;
     font-weight: 800;
     letter-spacing: -.02em;
     text-wrap: balance;
@@ -179,6 +180,10 @@ input[type=number] { -moz-appearance: textfield; }
     line-height: 1.5;
     color: var(--muted);
     max-width: 680px;
+}
+
+@media (min-width: 1024px) {
+    .page-title { font-size: 24px; }
 }
 
 /* ---------- Utilidades ---------- */
