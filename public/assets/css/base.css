@@ -168,8 +168,8 @@ input[type=number] { -moz-appearance: textfield; }
     margin-bottom: 28px;
 }
 .page-title {
-    font-size: clamp(26px, 2.8vw, 36px);
-    line-height: 1.15;
+    font-size: 20px;
+    line-height: 1.2;
     font-weight: 800;
     letter-spacing: -.02em;
     text-wrap: balance;
@@ -180,6 +180,10 @@ input[type=number] { -moz-appearance: textfield; }
     line-height: 1.5;
     color: var(--muted);
     max-width: 680px;
+}
+
+@media (min-width: 1024px) {
+    .page-title { font-size: 24px; }
 }
 
 /* ---------- Utilidades ---------- */
