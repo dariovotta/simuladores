@@ -104,18 +104,6 @@ input[type=number] { -moz-appearance: textfield; }
 .account-slot, .theme-slot { display: contents; }
 
 /* Cuenta: "Ingresar" sin sesión, avatar con menú con sesión (como portfolio). */
-.account-login {
-    height: 40px;
-    padding: 0 16px;
-    border-radius: 20px;
-    background: var(--chip);
-    color: var(--text);
-    font-size: 14px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    white-space: nowrap;
-}
 .account { position: relative; }
 .avatar {
     width: 40px;

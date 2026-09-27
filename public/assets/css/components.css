@@ -624,3 +624,19 @@
 .dialog__error:empty { display: none; }
 .dialog__actions { display: flex; gap: 10px; justify-content: flex-end; }
 .dialog__actions .btn { flex: 1; }
+
+/* ---------- Popup de ingreso (hace falta una cuenta) ---------- */
+.auth-gate { width: min(400px, calc(100% - 32px)); }
+.auth-gate::backdrop {
+    background: rgba(5, 10, 18, .35);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+}
+.auth-gate__body { gap: 16px; padding: 28px 24px 24px; }
+.auth-gate__brand { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 800; letter-spacing: -.02em; }
+.auth-gate__brand img { width: 32px; height: 32px; border-radius: 8px; }
+.auth-gate__title { font-size: 24px; margin-top: 4px; }
+.auth-gate__seg { max-width: none; flex: none; }
+.auth-gate__submit { height: 50px; width: 100%; }
+.auth-gate .segmented__btn:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
+html.is-gated { overflow: hidden; }

@@ -5,6 +5,7 @@
 // - Móvil: header dentro de la pantalla. En la home, marca + cuenta +
 //   tema; en las demás páginas, volver + nombre con menú + cuenta + tema.
 // - Web: botón de volver al lado del título en las páginas internas.
+// - Sin sesión se muestra el popup de ingreso (hace falta una cuenta).
 // Cada página declara <body data-page="...">, el contenedor
 // [data-slot="header"] y <main class="main screen">.
 // =========================================================
@@ -13,7 +14,8 @@ import { escapeHTML } from './dom.js';
 import { icon } from './icons.js';
 import { currentTheme, onThemeChange, toggleTheme } from './theme.js';
 import { api } from './api.js';
-import { getUser, initials } from './session.js';
+import { getUser, hadSession, initials, onUserChange, setUser } from './session.js';
+import { closeAuthGate, openAuthGate } from '../ui/auth-gate.js';
 
 /** URL raíz del sitio, calculada desde la ubicación de este módulo. */
 export const ROOT_URL = new URL('../../../', import.meta.url);
@@ -26,7 +28,6 @@ const TABS = [HOME, ...SIMULATORS];
 /** Páginas internas que no son simuladores (header móvil con volver). */
 const EXTRA_PAGES = {
     guardadas: 'Guardadas',
-    login: 'Tu cuenta',
 };
 const INDICATOR_KEY = 'mf-tab-indicator';
 
@@ -40,8 +41,8 @@ function themeButton() {
 
 function headerActions() {
     return `<div class="header-actions">
-        <span class="account-slot" data-account-slot></span>
         <span class="theme-slot" data-theme-slot>${themeButton()}</span>
+        <span class="account-slot" data-account-slot></span>
     </div>`;
 }
 
@@ -93,7 +94,7 @@ function renderMobileHeader(currentId) {
 /** En web, flecha de volver al lado del título (como en portfolio). */
 function addBackButton(pageId) {
     const head = document.querySelector('.page-head');
-    if (!head || pageId === 'home' || pageId === 'login') return;
+    if (!head || pageId === 'home') return;
     head.classList.add('page-head--back');
     head.insertAdjacentHTML('afterbegin',
         `<a class="icon-btn page-head__back only-web" href="${siteUrl()}" aria-label="Volver al inicio">${icon('back', 18)}</a>`);
@@ -150,7 +151,7 @@ function mountTabIndicator() {
     document.fonts?.ready.then(() => { const rect = measure(); if (rect) saveRect(rect); sync(); }).catch(() => {});
     new ResizeObserver(sync).observe(tabs);
 
-    // En páginas sin pestaña activa (guardadas, login) no hay desde dónde deslizar.
+    // En páginas sin pestaña activa (guardadas) no hay desde dónde deslizar.
     if (!active) saveRect(null);
 }
 
@@ -178,11 +179,6 @@ function bindMobileMenu() {
 }
 
 // ---------- Cuenta ----------
-function accountLoggedOut() {
-    const next = encodeURIComponent(location.pathname + location.search);
-    return `<a class="account-login" href="${siteUrl('login/')}?next=${next}">Ingresar</a>`;
-}
-
 function accountLoggedIn(user) {
     return `<div class="account">
         <button type="button" class="avatar" data-account-toggle aria-haspopup="menu" aria-expanded="false" title="${escapeHTML(user.email)}">${escapeHTML(initials(user.email))}</button>
@@ -194,11 +190,21 @@ function accountLoggedIn(user) {
     </div>`;
 }
 
-async function mountAccount() {
-    const user = await getUser();
+function renderAccount(user) {
     document.querySelectorAll('[data-account-slot]').forEach((slot) => {
-        slot.innerHTML = user ? accountLoggedIn(user) : accountLoggedOut();
+        slot.innerHTML = user ? accountLoggedIn(user) : '';
     });
+    if (user) closeAuthGate();
+    else openAuthGate();
+}
+
+async function mountAccount() {
+    // Si la última vez no había sesión, el popup aparece ya, sin esperar a la API.
+    if (!hadSession()) openAuthGate();
+    renderAccount(await getUser());
+    onUserChange(renderAccount);
+    // Sesión vencida en medio de la visita.
+    window.addEventListener('mf:unauthorized', () => setUser(null));
 
     const closeAll = () => document.querySelectorAll('.account-menu').forEach((m) => {
         m.hidden = true;
@@ -216,6 +222,7 @@ async function mountAccount() {
         }
         if (e.target.closest('[data-logout]')) {
             await api.logout().catch(() => {});
+            setUser(null);
             location.replace(siteUrl());
             return;
         }
