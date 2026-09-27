@@ -45,39 +45,39 @@
     /* Sombras (las cards no tienen) */
     --shadow-seg: 0 1px 3px rgba(15, 27, 45, .12);
     --shadow-thumb: 0 1px 3px rgba(15, 27, 45, .2);
-    --shadow-menu: 0 12px 32px rgba(5, 10, 18, .16);
+    --shadow-pop: 0 18px 40px -12px rgba(15, 27, 45, .35);
+    --ease-enter: cubic-bezier(.2, .8, .2, 1);
 
     /* Layout */
     --topbar-h: 68px;
-    --topbar-h-mobile: 60px;
     --page-max: 1140px;
-    --page-max-narrow: 900px;
 
     color-scheme: light;
 }
 
 :root[data-theme="dark"] {
-    --bg: #0B1017;
-    --card: #131A24;
-    --subtle: #18202C;
-    --chip: #1C2531;
-    --border: #232D3B;
-    --text: #E8EDF4;
-    --muted: #8A95A7;
+    /* Neutros en verde profundo (misma estructura que el azul oscuro de MisInversiones) */
+    --bg: #07110D;
+    --card: #0E1B15;
+    --subtle: #12221B;
+    --chip: #16291F;
+    --border: #1D3328;
+    --text: #E6F0EA;
+    --muted: #8AA396;
 
-    --primary: #22A673;
-    --primarySoft: #0F2A20;
-    --primaryInk: #86E3BD;
+    --primary: #2EBD84;
+    --primarySoft: #123526;
+    --primaryInk: #8FE5C0;
 
     --pos: #3DD68C;
-    --posSoft: #10301F;
+    --posSoft: #0F3322;
     --neg: #FF6B7D;
-    --negSoft: #3A151C;
+    --negSoft: #3A161D;
     --warn: #F5A04A;
-    --warnSoft: #33230F;
-    --barNeutral: #3A4658;
+    --warnSoft: #33260F;
+    --barNeutral: #2C4639;
 
-    --shadow-menu: 0 12px 32px rgba(0, 0, 0, .45);
+    --shadow-pop: 0 18px 40px -12px rgba(0, 0, 0, .6);
 
     color-scheme: dark;
 }
