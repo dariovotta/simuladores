@@ -50,7 +50,7 @@ input[type=number] { -moz-appearance: textfield; }
 }
 .topbar__inner {
     height: var(--topbar-h);
-    padding: 0 40px;
+    padding: 0 40px 1px;
     display: flex;
     align-items: center;
     gap: 44px;
@@ -58,14 +58,14 @@ input[type=number] { -moz-appearance: textfield; }
 .brand {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 11px;
     color: var(--text);
     text-decoration: none;
     flex: none;
     min-width: 0;
 }
 .brand__logo { width: 32px; height: 32px; border-radius: 8px; }
-.brand__name { font-size: 17px; font-weight: 800; letter-spacing: -.02em; line-height: 1.15; }
+.brand__name { font-size: 18px; font-weight: 800; letter-spacing: -.02em; line-height: 1; }
 
 .topnav {
     display: flex;
