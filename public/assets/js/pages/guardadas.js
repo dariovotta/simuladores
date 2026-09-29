@@ -1,14 +1,41 @@
 // =========================================================
 // PÁGINA: Simulaciones guardadas del usuario.
+// Filtros por simulador (se pueden combinar). Desde un simulador se
+// entra con ?filtro=<id> para ver solo las de ese simulador.
 // =========================================================
 import { mountLayout, siteUrl } from '../core/layout.js';
-import { $, escapeHTML, showToast } from '../core/dom.js';
+import { $, $$, escapeHTML, showToast } from '../core/dom.js';
 import { icon } from '../core/icons.js';
 import { api } from '../core/api.js';
 import { whenUser } from '../core/session.js';
 import { SIMULATORS, simulatorById } from '../config/site.js';
 
 const list = () => $('#savedList');
+const filters = new Set();
+let items = [];
+
+function readFilters() {
+    const ids = new URLSearchParams(location.search).getAll('filtro');
+    ids.flatMap((v) => v.split(',')).filter((id) => simulatorById(id)).forEach((id) => filters.add(id));
+}
+
+function writeFilters() {
+    const url = new URL(location.href);
+    url.searchParams.delete('filtro');
+    if (filters.size) url.searchParams.set('filtro', [...filters].join(','));
+    history.replaceState(null, '', url);
+}
+
+function renderFilters() {
+    $('#savedFilters').innerHTML = SIMULATORS.map((sim) => `
+        <button type="button" class="chip-btn" data-filter="${sim.id}" aria-pressed="${filters.has(sim.id)}">${escapeHTML(sim.shortName)}</button>`).join('')
+        + `<button type="button" class="chip-btn saved-filters__clear" data-clear-filters${filters.size ? '' : ' disabled'}>Quitar filtros</button>`;
+}
+
+function refresh() {
+    renderFilters();
+    render(items);
+}
 
 /** "27/09/2026, 16:45" en hora local. */
 function formatDate(iso) {
@@ -21,7 +48,12 @@ function renderEmpty(message, action = '') {
     list().innerHTML = `<section class="card saved-empty"><p>${message}</p>${action}</section>`;
 }
 
-function render(items) {
+function render(all) {
+    const items = filters.size ? all.filter((s) => filters.has(s.simulator)) : all;
+    if (all.length && !items.length) {
+        renderEmpty('No tenés simulaciones guardadas de los simuladores elegidos.');
+        return;
+    }
     if (!items.length) {
         renderEmpty('Todavía no guardaste simulaciones. Usá cualquier simulador y tocá <strong>Guardar simulación</strong>.',
             `<a class="btn btn--primary" href="${siteUrl()}">Ir a los simuladores</a>`);
@@ -45,10 +77,25 @@ function render(items) {
 
 async function init() {
     mountLayout();
+    readFilters();
+    renderFilters();
+    $('#savedFilters').addEventListener('click', (e) => {
+        const chip = e.target.closest('[data-filter]');
+        if (chip) {
+            const id = chip.dataset.filter;
+            if (filters.has(id)) filters.delete(id);
+            else filters.add(id);
+        } else if (e.target.closest('[data-clear-filters]')) {
+            filters.clear();
+        } else {
+            return;
+        }
+        writeFilters();
+        refresh();
+    });
     list().innerHTML = '<p class="empty-state">Cargando…</p>';
     // Sin sesión, la lista se carga después de ingresar en el popup.
     await whenUser();
-    let items = [];
     try {
         ({ simulations: items } = await api.listSimulations());
         render(items);

@@ -86,14 +86,14 @@ public/                     Todo lo que se publica
     css/
       tokens.css              Colores (claro y oscuro), tipografía, radios, sombras  ← punto de entrada de la estética
       base.css                Reset, pantalla, topbar web, header móvil, título de página
-      components.css          Cards, formularios, tablas, métricas, avisos, sliders, planes de brokers…
+      components.css          Cards, formularios, tablas, métricas, avisos, sliders…
       transitions.css         Animaciones de entrada entre pantallas (iguales a portfolio)
       pages/*.css             Ajustes propios de cada página
     js/
       theme-init.js           Aplica el tema y la dirección de la animación antes de pintar (sin parpadeo)
       config/site.js          Marca y catálogo de simuladores (home + navegación)
       core/                   Utilidades: formato es-AR, inputs, DOM, layout, tema, íconos, gráficos, API y sesión
-      data/brokers.js         Comisiones de brokers, derechos de mercado, IVA y planes
+      data/brokers.js         Comisiones de brokers, derechos de mercado e IVA
       calc/                   Lógica financiera pura (sin DOM), una por simulador
       ui/                     Componentes de UI compartidos (popup de ingreso y botón Guardar simulación)
       pages/                  Controlador de cada página: lee inputs → calc → render

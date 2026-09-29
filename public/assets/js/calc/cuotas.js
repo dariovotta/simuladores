@@ -73,7 +73,9 @@ export function evaluateCuotas({ cash, tnaPct, days, credit, planA, planB = null
     }
     const difference = Math.abs(a.finalBalance - b.finalBalance);
     let kind = 'tie';
-    if (a.finalBalance > b.finalBalance) kind = 'planA';
+    // Si los dos planes terminan con saldo negativo, conviene el contado.
+    if (a.finalBalance < 0 && b.finalBalance < 0) kind = 'cash';
+    else if (a.finalBalance > b.finalBalance) kind = 'planA';
     else if (b.finalBalance > a.finalBalance) kind = 'planB';
     return { kind, planA: a, planB: b, difference };
 }

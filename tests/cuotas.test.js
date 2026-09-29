@@ -49,5 +49,9 @@ test('cuotas: veredictos de un plan y de dos planes', () => {
     assert.equal(cmp.kind, 'planA');
     close(cmp.difference, cmp.planA.finalBalance - cmp.planB.finalBalance);
     assert.equal(evaluateCuotas({ ...base, planA: { installmentsTotal: 1, count: 1 }, planB: { installmentsTotal: 1, count: 0 } }).kind, 'missingBoth');
+    // Con los dos planes en negativo, conviene pagar de contado.
+    const both = evaluateCuotas({ ...base, planA: { installmentsTotal: 200000, count: 3 }, planB: { installmentsTotal: 180000, count: 6 } });
+    assert.equal(both.kind, 'cash');
+    assert.ok(both.planA.finalBalance < 0 && both.planB.finalBalance < 0);
     close(surchargePct(100000, 120000), 20);
 });

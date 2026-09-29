@@ -184,8 +184,7 @@ function accountLoggedIn(user) {
         <button type="button" class="avatar" data-account-toggle aria-haspopup="menu" aria-expanded="false" title="${escapeHTML(user.email)}">${escapeHTML(initials(user.email))}</button>
         <div class="account-menu" role="menu" hidden>
             <div class="account-menu__email">${escapeHTML(user.email)}</div>
-            <a class="account-menu__item" role="menuitem" href="${siteUrl('guardadas/')}">Simulaciones guardadas</a>
-            <button type="button" class="account-menu__item" role="menuitem" data-logout>Cerrar sesión</button>
+            <button type="button" class="account-menu__item account-menu__item--danger" role="menuitem" data-logout>Cerrar sesión</button>
         </div>
     </div>`;
 }
@@ -196,6 +195,36 @@ function renderAccount(user) {
     });
     if (user) closeAuthGate();
     else openAuthGate();
+}
+
+/** Confirmación antes de salir (como la hoja "Tu cuenta" de portfolio). */
+function confirmLogout() {
+    let dialog = document.getElementById('logoutDialog');
+    if (!dialog) {
+        document.body.insertAdjacentHTML('beforeend', `<dialog class="dialog dialog--sheet" id="logoutDialog" aria-labelledby="logoutTitle">
+            <div class="dialog__body">
+                <span class="dialog__handle" aria-hidden="true"></span>
+                <h2 class="dialog__title" id="logoutTitle">Cerrar sesión</h2>
+                <p class="dialog__text">¿Seguro que querés cerrar la sesión?</p>
+                <div class="dialog__actions">
+                    <button type="button" class="btn btn--ghost" data-logout-cancel>Cancelar</button>
+                    <button type="button" class="btn btn--danger" data-logout-confirm>Cerrar sesión</button>
+                </div>
+            </div>
+        </dialog>`);
+        dialog = document.getElementById('logoutDialog');
+        dialog.querySelector('[data-logout-cancel]').addEventListener('click', () => dialog.close());
+        dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
+        dialog.querySelector('[data-logout-confirm]').addEventListener('click', async (e) => {
+            e.currentTarget.disabled = true;
+            await api.logout().catch(() => {});
+            dialog.close();
+            setUser(null);
+            location.replace(siteUrl());
+        });
+    }
+    dialog.querySelector('[data-logout-confirm]').disabled = false;
+    dialog.showModal();
 }
 
 async function mountAccount() {
@@ -221,9 +250,8 @@ async function mountAccount() {
             return;
         }
         if (e.target.closest('[data-logout]')) {
-            await api.logout().catch(() => {});
-            setUser(null);
-            location.replace(siteUrl());
+            closeAll();
+            confirmLogout();
             return;
         }
         if (!e.target.closest('.account-menu')) closeAll();

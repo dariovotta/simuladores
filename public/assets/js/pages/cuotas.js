@@ -12,12 +12,13 @@ import { mountSaveSimulation } from '../ui/save-sim.js';
 const els = {};
 const state = { credit: true, compare: false };
 
-const VERDICT_ICON = { good: 'check', bad: 'x', mid: 'minus' };
+const VERDICT_ICON = { info: 'check', mid: 'minus' };
 
 function init() {
     mountLayout();
     for (const id of ['cash', 'tna', 'totalA', 'countA', 'days', 'daysField', 'totalB', 'countB', 'planBFields',
-        'compareBtn', 'installment', 'installmentSub', 'surcharge', 'verdict', 'verdictIcon', 'verdictText',
+        'compareBtn', 'installment', 'installmentSub', 'installmentB', 'installmentSubB', 'surcharge', 'surchargeSub',
+        'surchargeB', 'verdict', 'verdictIcon', 'verdictTitle', 'verdictText',
         'projection', 'projectionSub']) {
         els[id] = $(`#${id}`);
     }
@@ -67,7 +68,7 @@ function setCredit(credit) {
 function setCompare(compare) {
     state.compare = compare;
     toggle(els.planBFields, compare);
-    $$('[data-plan-tag]').forEach((tag) => toggle(tag, compare));
+    $$('[data-plan-tag], [data-plan-b-metric]').forEach((el) => toggle(el, compare));
     els.compareBtn.setAttribute('aria-pressed', String(compare));
     els.compareBtn.textContent = compare ? 'Quitar comparación' : '+ Comparar con otro plan';
     update();
@@ -103,37 +104,54 @@ function update() {
         planB: state.compare ? { installmentsTotal: v.totalB, count: v.countB } : null,
     });
 
+    const plural = (n) => `${n} cuota${n > 1 ? 's' : ''}`;
+    const setSurcharge = (el, total) => {
+        const ok = v.cash > 0 && total > 0;
+        const pct = surchargePct(v.cash, total);
+        el.textContent = ok ? formatPct(pct) : '—';
+        el.className = `metric__value${ok ? (pct > 0 ? ' tone-bad' : ' tone-good') : ''}`;
+    };
+
     const a = result.planA;
     els.installment.textContent = v.countA > 0 ? formatARS(a.installment, 2) : '—';
-    els.installmentSub.textContent = v.countA > 0 ? `${v.countA} cuota${v.countA > 1 ? 's' : ''}${state.compare ? ' (Plan A)' : ''}` : '';
-    const surcharge = surchargePct(v.cash, v.totalA);
-    els.surcharge.textContent = v.cash > 0 && v.totalA > 0 ? formatPct(surcharge) : '—';
-    els.surcharge.className = `metric__value${v.cash > 0 && v.totalA > 0 ? (surcharge > 0 ? ' tone-bad' : ' tone-good') : ''}`;
+    els.installmentSub.textContent = v.countA > 0 ? `${plural(v.countA)}${state.compare ? ' (Plan A)' : ''}` : (state.compare ? 'Plan A' : '');
+    setSurcharge(els.surcharge, v.totalA);
+    els.surchargeSub.textContent = state.compare ? 'Plan A' : 'Cuánto más pagás en cuotas';
+
+    if (state.compare) {
+        const b = result.planB;
+        els.installmentB.textContent = v.countB > 0 ? formatARS(b.installment, 2) : '—';
+        els.installmentSubB.textContent = v.countB > 0 ? `${plural(v.countB)} (Plan B)` : 'Plan B';
+        setSurcharge(els.surchargeB, v.totalB);
+    }
 
     renderVerdict(result, v);
     renderProjection(result, v);
 }
 
 function renderVerdict(result, v) {
+    const money = (n) => formatARS(n, 2);
     const V = {
-        missing: ['mid', '<strong>Cargá la cantidad de cuotas.</strong> Ingresá al menos 1 cuota para ver la proyección.'],
-        cash: ['bad', `<strong>Saldo negativo en el mes ${result.planA.firstNegative}.</strong> Bajo estas condiciones, pagar de contado es lo más conveniente.`],
-        installments: ['good', `<strong>Saldo positivo en las ${v.countA} cuotas.</strong> Pagar en cuotas termina siendo más conveniente por el rendimiento de la tasa.`],
-        missingBoth: ['mid', '<strong>Completá ambos planes.</strong> Ingresá el monto y las cuotas del Plan A y del Plan B para comparar.'],
-        tie: ['mid', '<strong>Empate.</strong> Los dos planes dejan el mismo saldo final.'],
+        missing: ['mid', 'Cargá la cantidad de cuotas', 'Ingresá al menos 1 cuota para ver la proyección.'],
+        missingBoth: ['mid', 'Completá ambos planes', 'Ingresá el monto y las cuotas del Plan A y del Plan B para comparar.'],
+        installments: ['info', 'Conviene pagar en cuotas', `El saldo queda positivo en las ${v.countA} cuotas. Pagar en cuotas termina siendo más conveniente por el rendimiento de la tasa.`],
+        tie: ['info', 'Los dos planes dan lo mismo', 'Los dos planes dejan el mismo saldo final.'],
     };
-    let tone;
-    let text;
-    if (result.kind === 'planA' || result.kind === 'planB') {
+    let entry = V[result.kind];
+    if (result.kind === 'cash') {
+        entry = ['info', 'Conviene pagar de contado', result.planB
+            ? `Los dos planes terminan con saldo negativo (Plan A: ${money(result.planA.finalBalance)}, Plan B: ${money(result.planB.finalBalance)}). Bajo estas condiciones, pagar de contado es lo más conveniente.`
+            : `El saldo se vuelve negativo en el mes ${result.planA.firstNegative}. Bajo estas condiciones, pagar de contado es lo más conveniente.`];
+    } else if (result.kind === 'planA' || result.kind === 'planB') {
         const [win, lose] = result.kind === 'planA' ? [result.planA, result.planB] : [result.planB, result.planA];
         const [wName, lName] = result.kind === 'planA' ? ['A', 'B'] : ['B', 'A'];
-        tone = 'good';
-        text = `<strong>Conviene el Plan ${wName}.</strong> Deja ${formatARS(win.finalBalance, 2)} contra ${formatARS(lose.finalBalance, 2)} del Plan ${lName}, una diferencia de <strong>${formatARS(result.difference, 2)}</strong>.`;
-    } else {
-        [tone, text] = V[result.kind];
+        entry = ['info', `Conviene el Plan ${wName}`,
+            `Deja ${money(win.finalBalance)} contra ${money(lose.finalBalance)} del Plan ${lName}, una diferencia de <strong>${money(result.difference)}</strong>.`];
     }
+    const [tone, title, text] = entry;
     els.verdict.className = `verdict verdict--${tone}`;
     els.verdictIcon.innerHTML = icon(VERDICT_ICON[tone], 14);
+    els.verdictTitle.textContent = title;
     els.verdictText.innerHTML = text;
 }
 

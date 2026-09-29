@@ -27,7 +27,6 @@
 
     <header class="page-head">
         <h1 class="page-title">¿Contado o cuotas?</h1>
-        <p class="page-lead">Proyección mes a mes: cada cuota se descuenta mientras el dinero rinde a la tasa. Cuando el saldo se vuelve negativo, conviene pagar de contado.</p>
     </header>
 
     <section class="card">
@@ -36,10 +35,6 @@
                 <h2 class="card__title">Datos de la compra</h2>
                 <p class="card__subtitle">Ingresá el precio de contado, la tasa que rinde tu dinero y el plan de cuotas</p>
             </div>
-            <div class="segmented" role="group" aria-label="Pago de contado">
-                <button type="button" class="segmented__btn" data-payment="debito" aria-pressed="false">Débito</button>
-                <button type="button" class="segmented__btn" data-payment="credito" aria-pressed="true">Crédito</button>
-            </div>
         </div>
 
         <form class="form-grid" id="cuotasForm" onsubmit="return false">
@@ -47,13 +42,13 @@
                 <label class="field__label" for="cash">Monto de contado</label>
                 <div class="input-affix input-affix--prefix">
                     <span class="input-affix__text">$</span>
-                    <input class="input" type="text" id="cash" placeholder="Ej: 100.000">
+                    <input class="input" type="text" id="cash">
                 </div>
             </div>
             <div class="field">
                 <label class="field__label" for="tna">TNA (rendimiento de tu dinero)</label>
                 <div class="input-affix input-affix--suffix">
-                    <input class="input" type="text" id="tna" placeholder="Ej: 35">
+                    <input class="input" type="text" id="tna">
                     <span class="input-affix__text">%</span>
                 </div>
             </div>
@@ -61,33 +56,49 @@
                 <label class="field__label" for="totalA">Monto en cuotas <span class="plan-tag hidden" data-plan-tag>(Plan A)</span></label>
                 <div class="input-affix input-affix--prefix">
                     <span class="input-affix__text">$</span>
-                    <input class="input" type="text" id="totalA" placeholder="Ej: 120.000">
+                    <input class="input" type="text" id="totalA">
                 </div>
             </div>
             <div class="field">
                 <label class="field__label" for="countA">Cantidad de cuotas <span class="plan-tag hidden" data-plan-tag>(Plan A)</span></label>
-                <input class="input" type="text" id="countA" placeholder="Ej: 6">
-            </div>
-            <div class="field" id="daysField">
-                <label class="field__label" for="days">Días al primer vencimiento</label>
                 <div class="input-affix input-affix--suffix input-affix--wide">
-                    <input class="input" type="text" id="days" placeholder="Ej: 30">
-                    <span class="input-affix__text">días</span>
+                    <input class="input" type="text" id="countA">
+                    <span class="input-affix__text">cuotas</span>
                 </div>
             </div>
         </form>
 
-        <div class="form-grid plan-b hidden" id="planBFields">
+        <div class="form-grid cuotas-section">
+            <div class="field">
+                <span class="field__label" id="paymentLabel">¿Cómo pagarías el contado?</span>
+                <div class="segmented cuotas-payment" role="group" aria-labelledby="paymentLabel">
+                    <button type="button" class="segmented__btn" data-payment="credito" aria-pressed="true">Crédito</button>
+                    <button type="button" class="segmented__btn" data-payment="debito" aria-pressed="false">Débito</button>
+                </div>
+            </div>
+            <div class="field hidden" id="daysField">
+                <label class="field__label" for="days">Días al primer vencimiento</label>
+                <div class="input-affix input-affix--suffix input-affix--wide">
+                    <input class="input" type="text" id="days">
+                    <span class="input-affix__text">días</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-grid cuotas-section hidden" id="planBFields">
             <div class="field">
                 <label class="field__label" for="totalB">Monto en cuotas (Plan B)</label>
                 <div class="input-affix input-affix--prefix">
                     <span class="input-affix__text">$</span>
-                    <input class="input" type="text" id="totalB" placeholder="Ej: 130.000">
+                    <input class="input" type="text" id="totalB">
                 </div>
             </div>
             <div class="field">
                 <label class="field__label" for="countB">Cantidad de cuotas (Plan B)</label>
-                <input class="input" type="text" id="countB" placeholder="Ej: 12">
+                <div class="input-affix input-affix--suffix input-affix--wide">
+                    <input class="input" type="text" id="countB">
+                    <span class="input-affix__text">cuotas</span>
+                </div>
             </div>
         </div>
 
@@ -99,17 +110,28 @@
             <div class="metric__label">Precio de la cuota</div>
             <div class="metric__value tone-info" id="installment">—</div>
             <div class="metric__sub" id="installmentSub"></div>
+            <div class="metric__split hidden" data-plan-b-metric>
+                <div class="metric__value tone-info" id="installmentB">—</div>
+                <div class="metric__sub" id="installmentSubB"></div>
+            </div>
         </div>
         <div class="metric">
             <div class="metric__label">Recargo sobre el contado</div>
             <div class="metric__value" id="surcharge">—</div>
-            <div class="metric__sub">Cuánto más pagás en cuotas</div>
+            <div class="metric__sub" id="surchargeSub">Cuánto más pagás en cuotas</div>
+            <div class="metric__split hidden" data-plan-b-metric>
+                <div class="metric__value" id="surchargeB">—</div>
+                <div class="metric__sub">Plan B</div>
+            </div>
         </div>
     </div>
 
     <div class="verdict" id="verdict" role="status">
         <span class="verdict__icon" id="verdictIcon" aria-hidden="true"></span>
-        <div id="verdictText"></div>
+        <div>
+            <strong class="verdict__title" id="verdictTitle"></strong>
+            <span class="verdict__desc" id="verdictText"></span>
+        </div>
     </div>
 
     <section class="card">
