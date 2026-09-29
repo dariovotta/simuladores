@@ -56,3 +56,8 @@
     padding: 36px 20px;
 }
 .saved-empty p { font-size: 14px; color: var(--muted); max-width: 420px; line-height: 1.55; }
+
+/* Filtros por simulador */
+.saved-filters { margin-bottom: 16px; }
+.saved-filters__clear { background: transparent; border-style: dashed; }
+.saved-filters__clear:disabled { opacity: .45; cursor: default; }

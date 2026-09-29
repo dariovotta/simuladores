@@ -28,6 +28,8 @@
     --negSoft: #FCE8EB;
     --warn: #B54708;
     --warnSoft: #FDF0E3;
+    --info: #2563EB;
+    --infoSoft: #E7EEFD;
     --barNeutral: #C9D0DA;
 
     /* Tipografía */
@@ -75,6 +77,8 @@
     --negSoft: #3A161D;
     --warn: #F5A04A;
     --warnSoft: #33260F;
+    --info: #7AA7FF;
+    --infoSoft: #14223D;
     --barNeutral: #2C4639;
 
     --shadow-pop: 0 18px 40px -12px rgba(0, 0, 0, .6);

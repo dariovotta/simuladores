@@ -119,6 +119,7 @@
 .btn:disabled { opacity: .4; cursor: default; }
 .btn--primary { background: var(--primary); color: var(--on-primary); }
 .btn--ghost { background: var(--card); border-color: var(--border); color: var(--text); }
+.btn--danger { background: var(--neg); color: #fff; }
 .btn-row { display: flex; gap: 10px; }
 .btn-row .btn--primary { flex: 1; }
 .btn-row .btn--ghost { flex: 1; max-width: 180px; }
@@ -401,6 +402,12 @@
 .verdict--mid { background: var(--warnSoft); }
 .verdict--mid .verdict__icon { background: var(--warn); }
 .verdict--mid strong { color: var(--warn); }
+.verdict--info { background: var(--infoSoft); }
+.verdict--info .verdict__icon { background: var(--info); }
+.verdict--info strong { color: var(--info); }
+.verdict__title { display: block; font-size: 16px; font-weight: 700; letter-spacing: -.01em; }
+.verdict__desc { display: block; color: var(--muted); margin-top: 2px; }
+.verdict__desc strong { color: var(--text) !important; }
 
 /* ---------- Estado vacío ---------- */
 .empty-state { text-align: center; padding: 36px 20px; color: var(--muted); font-size: 14px; }
@@ -485,7 +492,7 @@
     color: var(--muted);
 }
 
-/* ---------- Aviso legal ---------- */
+/* ---------- Aviso ---------- */
 .disclaimer {
     background: var(--subtle);
     border-radius: var(--radius-list);
@@ -494,46 +501,6 @@
 }
 .disclaimer__title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
 .disclaimer p { font-size: 13px; line-height: 1.65; color: var(--muted); text-wrap: pretty; }
-
-/* ---------- Planes de brokers ---------- */
-.plan-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-card);
-    padding: clamp(18px, 2vw, 24px);
-    margin-bottom: 14px;
-}
-.plan-card__head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
-.plan-card__logo {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    object-fit: contain;
-    background: #fff;
-    border: 1px solid var(--border);
-    padding: 3px;
-}
-.plan-card__name { font-size: 17px; font-weight: 700; letter-spacing: -.01em; }
-.plan-card__badge {
-    padding: 4px 10px;
-    border-radius: var(--radius-pill);
-    background: var(--primarySoft);
-    color: var(--primary);
-    font-size: 12px;
-    font-weight: 700;
-}
-.plan-card__desc { font-size: 14px; line-height: 1.6; color: var(--muted); margin-bottom: 16px; }
-.plan-card__desc strong { color: var(--text); }
-.plan-card__tiers {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
-    gap: 10px;
-}
-.plan-tier { background: var(--subtle); border-radius: var(--radius-note); padding: 14px 16px; }
-.plan-tier__name { font-size: 12px; font-weight: 700; color: var(--muted); }
-.plan-tier__price { font-size: 20px; font-weight: 700; letter-spacing: -.02em; margin-top: 2px; }
-.plan-tier__price small { font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: 0; }
-.plan-tier__desc { font-size: 12px; line-height: 1.5; color: var(--muted); margin-top: 4px; }
 
 /* ---------- Toast ---------- */
 .toast {
@@ -601,7 +568,7 @@
 @media (min-width: 1024px) {
     .page-head--actions { display: grid; grid-template-columns: 1fr auto; column-gap: 16px; row-gap: 6px; align-items: center; }
     .page-head--actions.page-head--back { grid-template-columns: auto 1fr auto; }
-    .page-head--actions > .page-head__actions { grid-column: -2; grid-row: 1 / span 2; margin-top: 0; justify-self: end; }
+    .page-head--actions > .page-head__actions { grid-column: -2; grid-row: 1; margin-top: 0; justify-self: end; }
     .page-head--actions:not(.page-head--back) > :not(.page-head__actions) { grid-column: 1; }
 }
 
@@ -624,6 +591,27 @@
 .dialog__error:empty { display: none; }
 .dialog__actions { display: flex; gap: 10px; justify-content: flex-end; }
 .dialog__actions .btn { flex: 1; }
+.dialog__handle { display: none; }
+
+/* Hoja desde abajo en móvil y popup centrado en web (como portfolio). */
+.dialog[open] { animation: popIn .2s ease-out; }
+.dialog[open]::backdrop { animation: fadeIn .2s ease-out; }
+@keyframes popIn { from { transform: scale(.97); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: none; } }
+@media (max-width: 1023px) {
+    .dialog--sheet {
+        width: 100%;
+        max-width: none;
+        margin: auto 0 0;
+        border-radius: 26px 26px 0 0;
+        border-width: 1px 0 0;
+    }
+    .dialog--sheet .dialog__body { padding: 10px 20px calc(env(safe-area-inset-bottom) + 30px); }
+    .dialog--sheet .dialog__handle { display: block; width: 40px; height: 5px; border-radius: 3px; background: var(--border); align-self: center; }
+    .dialog--sheet[open] { animation: slideUp .25s ease-out; }
+    .dialog--sheet .dialog__actions .btn { height: 50px; }
+}
 
 /* ---------- Popup de ingreso (hace falta una cuenta) ---------- */
 .auth-gate { width: min(400px, calc(100% - 32px)); }

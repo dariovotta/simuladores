@@ -157,6 +157,7 @@ input[type=number] { -moz-appearance: textfield; }
     color: var(--text);
 }
 .account-menu__item:hover { background: var(--subtle); }
+.account-menu__item--danger { color: var(--neg); }
 
 /* Botón icono circular (.icon-btn de portfolio) */
 .icon-btn {

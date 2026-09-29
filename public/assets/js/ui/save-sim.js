@@ -4,11 +4,14 @@
 // cargarlos (applyParams) y si ya hay algo para guardar (canSave).
 // - Botón "Guardar simulación" junto al título (se habilita cuando
 //   el simulador ya se usó). Pide un nombre único.
+// - Botón "Simulaciones guardadas" que abre la lista filtrada por este simulador.
 // - Si la URL trae ?sim=<id>, carga esa simulación guardada.
 // =========================================================
 import { api } from '../core/api.js';
 import { getUser, whenUser } from '../core/session.js';
 import { openAuthGate } from './auth-gate.js';
+
+const ROOT = new URL('../../../', import.meta.url);
 import { $, showToast } from '../core/dom.js';
 import { icon } from '../core/icons.js';
 
@@ -42,7 +45,8 @@ export function mountSaveSimulation({ simulator, getParams, applyParams, canSave
     head.classList.add('page-head--actions');
     head.insertAdjacentHTML('beforeend', `<div class="page-head__actions">
         <span class="page-head__loaded hidden" id="loadedSim"></span>
-        <button type="button" class="btn btn--ghost btn--sm" id="saveSimBtn" disabled>${icon('bookmark', 16)}Guardar simulación</button>
+        <a class="btn btn--ghost btn--sm" href="${new URL(`guardadas/?filtro=${encodeURIComponent(simulator)}`, ROOT).href}">${icon('bookmark', 16)}<span class="only-web">Simulaciones guardadas</span><span class="only-mobile">Guardadas</span></a>
+        <button type="button" class="btn btn--ghost btn--sm" id="saveSimBtn" disabled>${icon('bookmarkPlus', 16)}<span>Guardar<span class="only-web"> simulación</span></span></button>
     </div>`);
     document.body.insertAdjacentHTML('beforeend', dialogHTML());
 

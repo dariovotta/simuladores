@@ -9,7 +9,6 @@ import { chartTheme, createChartSlot, horizontalBarConfig } from '../core/charts
 import { onThemeChange } from '../core/theme.js';
 import { CATEGORIES, DATA_UPDATED } from '../data/brokers.js';
 import { categoryHasTna, computeCommissions, rateRanking } from '../calc/comisiones.js';
-import { renderBrokerPlans } from '../ui/broker-plans.js';
 import { mountSaveSimulation } from '../ui/save-sim.js';
 
 const state = {
@@ -39,7 +38,6 @@ function init() {
     chart = createChartSlot($('#rateChart'));
 
     renderCategories();
-    renderBrokerPlans($('#brokerPlans'), 'comisiones');
 
     els.modeButtons.forEach((btn) => btn.addEventListener('click', () => setMode(btn.dataset.mode === 'double')));
     els.opType.addEventListener('change', () => setMode(els.opType.value === 'double'));

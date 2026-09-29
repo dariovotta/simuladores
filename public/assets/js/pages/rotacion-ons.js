@@ -9,7 +9,6 @@ import { chartTheme, createChartSlot, horizontalBarConfig } from '../core/charts
 import { onThemeChange } from '../core/theme.js';
 import { DATA_UPDATED } from '../data/brokers.js';
 import { computeRotation, recoveryTone } from '../calc/rotacion.js';
-import { renderBrokerPlans } from '../ui/broker-plans.js';
 import { mountSaveSimulation } from '../ui/save-sim.js';
 
 const els = {};
@@ -31,7 +30,6 @@ function init() {
 
     $$('[data-bind="updated"]').forEach((el) => { el.textContent = DATA_UPDATED; });
     chart = createChartSlot($('#recoveryChart'));
-    renderBrokerPlans($('#brokerPlans'), 'rotacion');
 
     bindAmountInput(els.amount, { onChange: update });
     bindAmountInput(els.currentYield, { allowDecimals: true, onChange: update });
