@@ -54,15 +54,15 @@ function init() {
             category: state.category,
             double: state.double,
             amount: readNumber(els.amount),
-            days: parseInt(els.days.value, 10) || 7,
+            days: parseInt(els.days.value, 10) || null,
         }),
         applyParams: (p) => {
             writeNumber(els.amount, p.amount);
-            els.days.value = String(p.days ?? 7);
+            els.days.value = p.days ? String(p.days) : '';
             if (CATEGORIES[p.category]) selectCategory(p.category);
             setMode(Boolean(p.double));
         },
-        canSave: () => readNumber(els.amount) > 0,
+        canSave: () => readNumber(els.amount) > 0 && (!categoryHasTna(state.category) || parseInt(els.days.value, 10) > 0),
     });
 }
 
@@ -141,7 +141,12 @@ function renderResults() {
         return;
     }
 
-    const days = Math.min(365, Math.max(1, parseInt(els.days.value, 10) || 7));
+    const rawDays = parseInt(els.days.value, 10);
+    if (categoryHasTna(state.category) && !(rawDays > 0)) {
+        els.results.innerHTML = emptyState('Ingresá el plazo en días para ver la comparación de comisiones');
+        return;
+    }
+    const days = Math.min(365, Math.max(1, rawDays || 1));
     const calc = computeCommissions({ categoryKey: state.category, amount, days, double: state.double });
     const isFixed = Boolean(calc.category.isFixed);
     const showIva = !calc.ivaExempt;

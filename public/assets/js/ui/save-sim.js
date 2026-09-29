@@ -22,7 +22,7 @@ function dialogHTML() {
             <p class="dialog__text">Ponele un nombre para encontrarla después. Tiene que ser distinto al de tus otras simulaciones.</p>
             <div class="field">
                 <label class="field__label" for="saveName">Nombre</label>
-                <input class="input" id="saveName" type="text" maxlength="60" autocomplete="off" placeholder="Ej: Compra heladera">
+                <input class="input" id="saveName" type="text" maxlength="60" autocomplete="off">
             </div>
             <p class="dialog__error" id="saveError" role="alert"></p>
             <div class="dialog__actions">

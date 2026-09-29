@@ -2,7 +2,7 @@
 // PÁGINA: Duration y Sensibilidad de Bonos
 // =========================================================
 import { mountLayout } from '../core/layout.js';
-import { $ } from '../core/dom.js';
+import { $, emptyState, toggle } from '../core/dom.js';
 import { formatNumber, formatSignedPct } from '../core/format.js';
 import { axisStyle, chartTheme, createChartSlot, highlightPoint, mainLine, tooltipStyle } from '../core/charts.js';
 import { rangePercent, setRangeFill } from '../core/inputs.js';
@@ -30,18 +30,23 @@ function readParams() {
     };
 }
 
+/** true cuando los cuatro campos numéricos tienen un valor. */
+function isComplete() {
+    return ['nominal', 'coupon', 'years', 'yield'].every((id) => els[id].value.trim() !== '' && Number.isFinite(parseFloat(els[id].value)));
+}
+
 function init() {
     mountLayout();
     for (const id of ['nominal', 'coupon', 'years', 'yield', 'frequency', 'amortization', 'shock',
         'metDuration', 'metModDuration', 'metPrice', 'shockValue', 'shockPrice', 'shockPriceSub',
-        'shockPnl', 'shockPnlSub', 'cashflows']) {
+        'shockPnl', 'shockPnlSub', 'cashflows', 'chartBox', 'chartEmpty']) {
         els[id] = $(`#${id}`);
     }
     chart = createChartSlot($('#priceChart'));
 
     $('#bondForm').addEventListener('input', update);
     $('#bondForm').addEventListener('change', update);
-    els.shock.addEventListener('input', () => renderShock(readParams()));
+    els.shock.addEventListener('input', () => { if (isComplete()) renderShock(readParams()); else renderShockEmpty(); });
     update();
     onThemeChange(update);
 
@@ -58,11 +63,23 @@ function init() {
             els.shock.value = String(p.shock ?? 0);
             update();
         },
-        canSave: () => true,
+        canSave: () => isComplete(),
     });
 }
 
 function update() {
+    const complete = isComplete();
+    toggle(els.chartBox, complete);
+    toggle(els.chartEmpty, !complete);
+    if (!complete) {
+        els.metDuration.textContent = '—';
+        els.metModDuration.textContent = '—';
+        els.metPrice.textContent = '—';
+        renderShockEmpty();
+        chart.destroy();
+        els.cashflows.innerHTML = emptyState('Completá los parámetros del bono para ver los flujos de fondos.');
+        return;
+    }
     const params = readParams();
     const bond = analyzeBond(params);
 
@@ -73,6 +90,20 @@ function update() {
     renderShock(params);
     renderChart(params);
     renderCashflows(bond);
+}
+
+/** Sin datos del bono: el slider se mueve pero no hay precio que mostrar. */
+function renderShockEmpty() {
+    const delta = parseInt(els.shock.value, 10) / 100;
+    els.shockValue.textContent = formatSignedPct(delta);
+    const pct = rangePercent(els.shock);
+    setRangeFill(els.shock, Math.min(50, pct), Math.max(50, pct), delta < 0 ? 'var(--pos)' : 'var(--neg)');
+    for (const el of [els.shockPrice, els.shockPnl]) {
+        el.textContent = '—';
+        el.className = 'metric__value';
+    }
+    els.shockPriceSub.textContent = '';
+    els.shockPnlSub.textContent = '';
 }
 
 function renderShock(params) {
