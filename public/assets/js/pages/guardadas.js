@@ -8,6 +8,7 @@ import { $, $$, escapeHTML, showToast } from '../core/dom.js';
 import { icon } from '../core/icons.js';
 import { api } from '../core/api.js';
 import { whenUser } from '../core/session.js';
+import { confirmDialog } from '../ui/confirm.js';
 import { SIMULATORS, simulatorById } from '../config/site.js';
 
 const list = () => $('#savedList');
@@ -108,7 +109,14 @@ async function init() {
         if (!btn) return;
         const row = btn.closest('[data-id]');
         const item = items.find((s) => String(s.id) === row.dataset.id);
-        if (!item || !confirm(`¿Borrar "${item.name}"?`)) return;
+        if (!item) return;
+        const ok = await confirmDialog({
+            title: 'Borrar simulación',
+            text: `¿Seguro que querés borrar "${item.name}"? No se puede deshacer.`,
+            confirmLabel: 'Borrar',
+            danger: true,
+        });
+        if (!ok) return;
         btn.disabled = true;
         try {
             await api.deleteSimulation(item.id);
