@@ -184,7 +184,7 @@ function accountLoggedIn(user) {
         <button type="button" class="avatar" data-account-toggle aria-haspopup="menu" aria-expanded="false" title="${escapeHTML(user.email)}">${escapeHTML(initials(user.email))}</button>
         <div class="account-menu" role="menu" hidden>
             <div class="account-menu__email">${escapeHTML(user.email)}</div>
-            <button type="button" class="account-menu__item account-menu__item--danger" role="menuitem" data-logout>Cerrar sesión</button>
+            <button type="button" class="account-menu__item account-menu__item--danger" role="menuitem" data-logout>${icon('logout', 16)}Cerrar sesión</button>
         </div>
     </div>`;
 }
