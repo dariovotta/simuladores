@@ -133,7 +133,10 @@ input[type=number] { -moz-appearance: textfield; }
     padding: 6px;
     display: flex;
     flex-direction: column;
+    transform-origin: top right;
+    animation: accountMenuIn .18s ease-out;
 }
+@keyframes accountMenuIn { from { transform: scale(.97); opacity: 0; } to { transform: none; opacity: 1; } }
 .account-menu[hidden] { display: none; }
 .account-menu__email {
     padding: 10px 14px 8px;
@@ -151,6 +154,7 @@ input[type=number] { -moz-appearance: textfield; }
     background: transparent;
     display: flex;
     align-items: center;
+    gap: 10px;
     text-align: left;
     font-size: 14px;
     font-weight: 600;
@@ -158,6 +162,7 @@ input[type=number] { -moz-appearance: textfield; }
 }
 .account-menu__item:hover { background: var(--subtle); }
 .account-menu__item--danger { color: var(--neg); }
+.account-menu__item .icon { width: 16px; height: 16px; flex: none; }
 
 /* Botón icono circular (.icon-btn de portfolio) */
 .icon-btn {

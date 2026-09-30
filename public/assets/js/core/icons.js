@@ -13,6 +13,7 @@ const PATHS = {
     minus: ['<path d="M6 12h12"/>', 3.5],
     bookmark: ['<path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>', 2],
     bookmarkPlus: ['<path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/><path d="M12 7v6M9 10h6"/>', 2],
+    logout: ['<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>', 2],
     trash: ['<path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/>', 2],
 };
 
