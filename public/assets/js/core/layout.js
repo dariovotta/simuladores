@@ -204,26 +204,37 @@ function confirmLogout() {
         document.body.insertAdjacentHTML('beforeend', `<dialog class="dialog dialog--sheet" id="logoutDialog" aria-labelledby="logoutTitle">
             <div class="dialog__body">
                 <span class="dialog__handle" aria-hidden="true"></span>
-                <h2 class="dialog__title" id="logoutTitle">Cerrar sesión</h2>
-                <p class="dialog__text">¿Seguro que querés cerrar la sesión?</p>
+                <div class="dialog__head">
+                    <h2 class="dialog__title" id="logoutTitle">Cerrar sesión</h2>
+                    <p class="dialog__sub">¿Seguro que querés cerrar la sesión?</p>
+                </div>
                 <div class="dialog__actions">
-                    <button type="button" class="btn btn--ghost" data-logout-cancel>Cancelar</button>
+                    <button type="button" class="btn btn--outline" data-logout-cancel>Cancelar</button>
                     <button type="button" class="btn btn--danger" data-logout-confirm>Cerrar sesión</button>
                 </div>
             </div>
         </dialog>`);
         dialog = document.getElementById('logoutDialog');
         dialog.querySelector('[data-logout-cancel]').addEventListener('click', () => dialog.close());
-        dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
+        dialog.addEventListener('click', (e) => { if (e.target === dialog && !dialog.dataset.busy) dialog.close(); });
+        dialog.addEventListener('cancel', (e) => { if (dialog.dataset.busy) e.preventDefault(); });
         dialog.querySelector('[data-logout-confirm]').addEventListener('click', async (e) => {
-            e.currentTarget.disabled = true;
+            const btn = e.currentTarget;
+            dialog.dataset.busy = '1';
+            btn.disabled = true;
+            dialog.querySelector('[data-logout-cancel]').disabled = true;
+            btn.textContent = 'Cerrando…';
             await api.logout().catch(() => {});
             dialog.close();
             setUser(null);
             location.replace(siteUrl());
         });
     }
-    dialog.querySelector('[data-logout-confirm]').disabled = false;
+    delete dialog.dataset.busy;
+    const ok = dialog.querySelector('[data-logout-confirm]');
+    ok.disabled = false;
+    ok.textContent = 'Cerrar sesión';
+    dialog.querySelector('[data-logout-cancel]').disabled = false;
     dialog.showModal();
 }
 

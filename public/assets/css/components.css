@@ -593,24 +593,42 @@
 .dialog__actions .btn { flex: 1; }
 .dialog__handle { display: none; }
 
-/* Hoja desde abajo en móvil y popup centrado en web (como portfolio). */
+/* Popup de animación común */
 .dialog[open] { animation: popIn .2s ease-out; }
 .dialog[open]::backdrop { animation: fadeIn .2s ease-out; }
 @keyframes popIn { from { transform: scale(.97); opacity: 0; } to { transform: none; opacity: 1; } }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes slideUp { from { transform: translateY(100%); } to { transform: none; } }
+
+/* Hoja (Sheet de cotizaciones): popup centrado en web, desde abajo en móvil. */
+.dialog__head { display: flex; flex-direction: column; gap: 2px; }
+.dialog__sub { font-size: 13px; color: var(--muted); }
+.btn--outline { background: transparent; border-color: var(--border); color: var(--text); }
+.dialog--sheet {
+    width: min(420px, calc(100% - 32px));
+    border: none;
+    border-radius: 22px;
+    box-shadow: var(--shadow-modal);
+}
+.dialog--sheet::backdrop { background: var(--overlay); }
+.dialog--sheet[open]::backdrop { animation: fadeIn .25s ease-out; }
+.dialog--sheet .dialog__title { font-size: 18px; letter-spacing: 0; }
+.dialog--sheet .dialog__actions { padding-top: 4px; }
+.dialog--sheet .dialog__actions .btn { height: 44px; border-radius: 12px; }
 @media (max-width: 1023px) {
     .dialog--sheet {
         width: 100%;
         max-width: none;
+        max-height: 88%;
         margin: auto 0 0;
         border-radius: 26px 26px 0 0;
-        border-width: 1px 0 0;
+        box-shadow: none;
     }
     .dialog--sheet .dialog__body { padding: 10px 20px calc(env(safe-area-inset-bottom) + 30px); }
-    .dialog--sheet .dialog__handle { display: block; width: 40px; height: 5px; border-radius: 3px; background: var(--border); align-self: center; }
+    .dialog--sheet .dialog__handle { display: block; width: 40px; height: 5px; border-radius: 3px; background: var(--border); align-self: center; flex: none; }
     .dialog--sheet[open] { animation: slideUp .25s ease-out; }
-    .dialog--sheet .dialog__actions .btn { height: 50px; }
+    .dialog--sheet .dialog__title { font-size: 17px; }
+    .dialog--sheet .dialog__actions .btn { height: 50px; border-radius: 14px; }
 }
 
 /* ---------- Popup de ingreso (hace falta una cuenta) ---------- */
