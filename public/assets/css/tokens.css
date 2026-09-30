@@ -48,6 +48,8 @@
     --shadow-seg: 0 1px 3px rgba(15, 27, 45, .12);
     --shadow-thumb: 0 1px 3px rgba(15, 27, 45, .2);
     --shadow-pop: 0 18px 40px -12px rgba(15, 27, 45, .35);
+    --shadow-modal: 0 30px 60px -20px rgba(15, 27, 45, .4);
+    --overlay: rgba(5, 10, 18, .45);
     --ease-enter: cubic-bezier(.2, .8, .2, 1);
 
     /* Layout */
