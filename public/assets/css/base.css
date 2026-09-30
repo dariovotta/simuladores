@@ -177,6 +177,8 @@ input[type=number] { -moz-appearance: textfield; }
 
 /* ---------- Header móvil (dentro de la pantalla) ---------- */
 .app-header {
+    position: relative;
+    z-index: 20;
     display: flex;
     align-items: center;
     justify-content: space-between;
